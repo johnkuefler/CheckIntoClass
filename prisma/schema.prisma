@@ -12,11 +12,178 @@ datasource db {
 
 model User {
   id            Int       @id @default(autoincrement())
-  name          String
+  firstName     String
+  lastName      String
   email         String    @unique
   emailVerified DateTime?
   password      String?
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  institutionId Int
+  institution   Institution @relation(fields: [institutionId], references: [id])
+
+  userRoles       UserRole[]
+  departmentUsers DepartmentUser[]
+  delegations     Delegation[]
+}
+
+model Role {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userRoles UserRole[]
+}
+
+model UserRole {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  roleId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+  role Role @relation(fields: [roleId], references: [id])
+
+  @@unique([userId, roleId])
+}
+
+model Institution {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  code      String   @unique
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users       User[]
+  departments Department[]
+}
+
+model Department {
+  id        Int      @id @default(autoincrement())
+  name      String
+  code      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  institutionId Int
+  institution   Institution @relation(fields: [institutionId], references: [id])
+
+  departmentUsers DepartmentUser[]
+  courses         Course[]
+}
+
+model DepartmentUser {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  departmentId Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user       User       @relation(fields: [userId], references: [id])
+  department Department @relation(fields: [departmentId], references: [id])
+
+  @@unique([userId, departmentId])
+}
+
+model Course {
+  id        Int      @id @default(autoincrement())
+  name      String
+  active    Boolean  @default(true)
+  nickName  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  departmentId Int
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  delegations  Delegation[]
+  enrollments  Enrollment[]
+  checkinCodes CheckinCode[]
+  specialEvents SpecialEvent[]
+}
+
+model Delegation {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  courseId Int
+  course   Course @relation(fields: [courseId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Enrollment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  active      Boolean @default(true)
+  studentID   String
+  studentName String
+
+  courseId Int
+  course   Course    @relation(fields: [courseId], references: [id])
+  
+  checkins  Checkin[]
+  specialEventCheckins SpecialEventCheckin[]
+}
+
+model CheckinCode {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  code String
+
+  courseId Int
+  course   Course    @relation(fields: [courseId], references: [id])
+  
+  checkins  Checkin[]
+}
+
+model Checkin {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  checkinCodeId Int
+  checkinCode   CheckinCode @relation(fields: [checkinCodeId], references: [id])
+
+  enrollmentId Int
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+}
+
+model SpecialEvent {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name           String
+  code        String
+  expireDateTime   DateTime
+
+  courseId Int
+  course   Course @relation(fields: [courseId], references: [id])
+
+  specialEventCheckins SpecialEventCheckin[]
+}
+
+model SpecialEventCheckin {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  specialEventId Int
+  specialEvent   SpecialEvent @relation(fields: [specialEventId], references: [id])
+
+  enrollmentId Int
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
 }
