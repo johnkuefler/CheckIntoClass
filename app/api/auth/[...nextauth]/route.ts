@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import prisma from "@/app/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { AuthOptions } from "next-auth";
@@ -18,11 +19,14 @@ export const authOptions: AuthOptions = {
           where: { email: credentials?.email },
         });
 
-        if (!user) throw new Error("user with that email does not exist");
+        if (!user) throw new Error("User with that email does not exist");
 
-        // ⚠️ WARNING: DO NOT do this in real-world development
-        if (user.password !== credentials?.password)
-          throw new Error("incorrect password");
+        // Compare hashed password with the provided password
+        const isValid = await bcrypt.compare(
+          credentials?.password,
+          user.password
+        );
+        if (!isValid) throw new Error("Incorrect password");
 
         return user;
       },
