@@ -4,7 +4,8 @@ import { useState } from "react";
 
 const RegisterPage = () => {
   const [registerData, setRegisterData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
   });
@@ -26,7 +27,7 @@ const RegisterPage = () => {
         body: JSON.stringify(registerData),
       });
       setAlert({ status: "success", message: "Signup successfully" });
-      setRegisterData({ name: "", email: "", password: "" });
+      setRegisterData({ firstName: "", lastName:"", email: "", password: "" });
     } catch (error: any) {
       console.log({ error });
       setAlert({ status: "error", message: "Something went wrong" });
@@ -48,12 +49,22 @@ const RegisterPage = () => {
       )}
       <form onSubmit={onSubmit}>
         <div>
-          <label htmlFor="name">Name</label>
+          <label htmlFor="firstName">First Name</label>
           <input
             onChange={onChange}
-            value={registerData.name}
+            value={registerData.firstName}
             type="text"
-            name="name"
+            name="firstName"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="name">Last Name</label>
+          <input
+            onChange={onChange}
+            value={registerData.lastName}
+            type="text"
+            name="lastName"
             required
           />
         </div>

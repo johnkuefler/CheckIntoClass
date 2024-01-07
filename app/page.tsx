@@ -34,7 +34,7 @@ export default async function Home() {
 
   return (
     <>
-      <h3>Name: {user.name}</h3>
+      <h3>Name: {user.firstName}</h3>
       <p>Email: {user.email}</p>
       <LogoutButton />
     </>
