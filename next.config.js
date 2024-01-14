@@ -16,5 +16,5 @@ module.exports = {
 	images: {
 		domains: ['luma-dev.s3.us-east-2.amazonaws.com'],
 	  },
-	output: 'standalone' // 
+	output: 'standalone' // standalone or minimal-ui
 };
