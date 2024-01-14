@@ -28,6 +28,8 @@ export default async function Home() {
     return (
       <>
         <h3>You are currently not logged in!</h3>
+        <button className="btn btn-primary">Hello daisyUI!</button>
+
         <Link href="/auth/login">Login to my account</Link>
       </>
     );
