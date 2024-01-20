@@ -27,7 +27,7 @@ const RegisterPage = () => {
         body: JSON.stringify(registerData),
       });
       setAlert({ status: "success", message: "Signup successfully" });
-      setRegisterData({ firstName: "", lastName:"", email: "", password: "" });
+      setRegisterData({ firstName: "", lastName: "", email: "", password: "" });
     } catch (error: any) {
       console.log({ error });
       setAlert({ status: "error", message: "Something went wrong" });
@@ -51,6 +51,7 @@ const RegisterPage = () => {
         <div>
           <label htmlFor="firstName">First Name</label>
           <input
+            className="input input-bordered w-full max-w-xs"
             onChange={onChange}
             value={registerData.firstName}
             type="text"
@@ -59,8 +60,9 @@ const RegisterPage = () => {
           />
         </div>
         <div>
-          <label htmlFor="name">Last Name</label>
+          <label htmlFor="lastName">Last Name</label>
           <input
+            className="input input-bordered w-full max-w-xs"
             onChange={onChange}
             value={registerData.lastName}
             type="text"
@@ -71,6 +73,7 @@ const RegisterPage = () => {
         <div>
           <label htmlFor="email">Email</label>
           <input
+            className="input input-bordered w-full max-w-xs"
             onChange={onChange}
             value={registerData.email}
             type="email"
@@ -81,6 +84,7 @@ const RegisterPage = () => {
         <div>
           <label htmlFor="password">Password</label>
           <input
+            className="input input-bordered w-full max-w-xs"
             onChange={onChange}
             value={registerData.password}
             type="password"
@@ -88,10 +92,15 @@ const RegisterPage = () => {
             required
           />
         </div>
-        <button type="submit">Create account</button>
+        <button className="btn btn-primary" type="submit">
+          Create account
+        </button>
       </form>
       <div>
-        Already have an account? <Link href="/auth/login">Login here</Link>
+        Already have an account?{" "}
+        <a href="/auth/login" className="btn btn-secondary">
+          Login here
+        </a>
       </div>
     </div>
   );

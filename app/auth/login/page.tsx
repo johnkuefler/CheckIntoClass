@@ -21,14 +21,25 @@ const LoginPage = () => {
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     try {
-      await signIn("credentials", loginData);
-      setAlert({ status: "success", message: "Login successfully" });
-      setLoginData({ email: "", password: "" });
+      const result = await signIn("credentials", {
+        ...loginData,
+        redirect: false,
+        callbackUrl: '/mainpage', // Replace '/mainpage' with your main page's path
+      });
+  
+      if (!result.error) {
+        // Redirect to callback URL
+        window.location.href = '/';
+      } else {
+        // Handle error case
+        setAlert({ status: "error", message: result.error });
+      }
     } catch (error: any) {
       console.log({ error });
       setAlert({ status: "error", message: "Something went wrong" });
     }
-  };  
+  };
+  
 
   return (
     <div>
@@ -44,7 +55,7 @@ const LoginPage = () => {
       <form onSubmit={onSubmit}> // will be integrated with next-auth
         <div>
           <label htmlFor="email">Email </label>
-          <input
+          <input className="input input-bordered w-full max-w-xs"
             onChange={onChange}
             value={loginData.email}
             type="email"
@@ -55,7 +66,7 @@ const LoginPage = () => {
 
         <div>
           <label htmlFor="password">Password </label>
-          <input
+          <input className="input input-bordered w-full max-w-xs"
             onChange={onChange}
             value={loginData.password}
             type="password"
@@ -63,11 +74,13 @@ const LoginPage = () => {
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button className="btn btn-primary"  type="submit">Login</button>
       </form>
       <div>
         Do not have an account?{" "}
-        <Link href="/auth/register">Create an account</Link>
+        <div>
+        <a className="btn btn-secondary" href="/auth/register">Create an account</a>
+        </div>
       </div>
     </div>
   );

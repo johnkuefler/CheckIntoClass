@@ -17,9 +17,7 @@ const getCurrentUser = async () => {
   }
 };
 
-import Image from "next/image";
 import LogoutButton from "./components/LogoutButton";
-import Link from "next/link";
 
 export default async function Home() {
   const user = await getCurrentUser();
@@ -37,7 +35,6 @@ export default async function Home() {
     <>
       <h3>Name: {user.firstName}</h3>
       <p>Email: {user.email}</p>
-      <LogoutButton />
     </>
   );
 }

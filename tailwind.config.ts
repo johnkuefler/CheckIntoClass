@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
 import daisyui from 'daisyui';
+import typography from '@tailwindcss/typography';
 
 const config: Config = {
   content: [
@@ -7,6 +8,31 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  theme: {
+    extend: {
+      fontSize: {
+        'base': '1rem', // Default font size
+        'lg': '1.125rem',
+        'xl': '1.25rem',
+        '2xl': '1.5rem',
+        '3xl': '1.875rem',
+        '4xl': '2.25rem',
+        '5xl': '3rem',
+        '6xl': '4rem',
+      },
+      fontWeight: {
+        'normal': 400,
+        'medium': 500,
+        'semibold': 600,
+        'bold': 700,
+      },
+      lineHeight: {
+        'normal': 1.5,
+        'tight': 1.25,
+        'loose': 1.75,
+      },
+    },
+  },
   daisyui: {
     themes: [
       {
@@ -21,7 +47,7 @@ const config: Config = {
       },
     ],
   },
-  plugins: [daisyui],
+  plugins: [daisyui, typography],
 };
 
 export default config;
