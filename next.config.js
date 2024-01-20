@@ -13,8 +13,5 @@ module.exports = {
 		// disable build failure from linting errors
 		ignoreDuringBuilds: true,
 	},
-	images: {
-		domains: ['luma-dev.s3.us-east-2.amazonaws.com'],
-	  },
 	output: 'standalone' // standalone
 };
