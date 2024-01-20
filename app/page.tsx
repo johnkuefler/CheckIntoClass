@@ -33,7 +33,7 @@ export default async function Home() {
 
   return (
     <>
-      <h3>Manage Courses Grid will go Here</h3>
+      <h1>Manage Courses Grid will go Here</h1>
       <p>Email: {user.email}</p>
     </>
   );
