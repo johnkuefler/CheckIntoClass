@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global styles for typography */
+/* Global styles for typical typography */
 h1 {
   @apply text-4xl font-bold;
 }
