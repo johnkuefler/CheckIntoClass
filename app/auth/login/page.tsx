@@ -43,7 +43,7 @@ const LoginPage = () => {
 
   return (
     <div>
-      <h3>Login Page</h3>
+      <h3>Login Page!</h3>
       {alert.message && 
         <div style={{ 
           color: alert.status === 'success' ? 'green' : 'red',
