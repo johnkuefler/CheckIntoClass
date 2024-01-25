@@ -52,7 +52,7 @@ const LoginPage = () => {
           {alert.status === 'success' ? '✅' : '❌'} {alert.message}
         </div>
       }
-      <form onSubmit={onSubmit}> // will be integrated with next-auth
+      <form onSubmit={onSubmit}> {/* will be integrated with next-auth */}
         <div>
           <label htmlFor="email">Email </label>
           <input className="input input-bordered w-full max-w-xs"
