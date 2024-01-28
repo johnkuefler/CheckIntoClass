@@ -97,7 +97,7 @@ const RegisterPage = () => {
         </button>
       </form>
       <div>
-        Already have an account?{" "}
+
         <a href="/auth/login" className="btn btn-secondary">
           Login here
         </a>
