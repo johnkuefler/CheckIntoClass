@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import {signIn} from 'next-auth/react';
+import Image from 'next/image';
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState({
@@ -42,8 +43,13 @@ const LoginPage = () => {
   
 
   return (
-    <div>
-      <h3>Login Page!</h3>
+    <div className="mx-auto max-w-md border p-10 border-gray-300">
+      <Image
+        src="/logo.png" 
+        alt="Check Into Class Logo" 
+        width={200} 
+        height={100}
+      />
       {alert.message && 
         <div style={{ 
           color: alert.status === 'success' ? 'green' : 'red',
@@ -52,7 +58,8 @@ const LoginPage = () => {
           {alert.status === 'success' ? '✅' : '❌'} {alert.message}
         </div>
       }
-      <form onSubmit={onSubmit}> // will be integrated with next-auth
+      <form onSubmit={onSubmit}> 
+        {/* /* // will be integrated with next-auth */ }
         <div>
           <label htmlFor="email">Email </label>
           <input className="input input-bordered w-full max-w-xs"
