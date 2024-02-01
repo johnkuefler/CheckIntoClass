@@ -93,13 +93,13 @@ const InstitutionPage = () => {
                 <td>
                   <button
                     onClick={() => openModal(institution)}
-                    className="btn btn-xs btn-success"
+                    className="btn btn-xs btn-success text-white"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(institution.id)}
-                    className="btn btn-xs btn-error ml-5"
+                    className="btn btn-xs btn-error ml-5 text-white"
                   >
                     Delete
                   </button>
