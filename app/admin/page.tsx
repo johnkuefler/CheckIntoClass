@@ -2,7 +2,7 @@ const AdminPage = () => {
   
   return (
     <div>
-      <a href="/admin/institutions">Manage Institutions</a>
+      <a className="underline" href="/admin/institutions">Manage Institutions</a>
     </div>
   );
 };
