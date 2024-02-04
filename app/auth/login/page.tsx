@@ -49,9 +49,9 @@ const LoginPage = () => {
         alt="Check Into Class Logo" 
         width={200} 
         height={100}
-        className="flex justify-center"
+        className="flex justify-center mx-auto"
       />
-      <h3 className="flex content-center">Instructor Login </h3>
+      <h3 className="flex content-center justify-center mx-auto">Instructor Login </h3>
 
       {alert.message && 
         <div style={{ 
@@ -77,7 +77,7 @@ const LoginPage = () => {
 
         <div>
           <label htmlFor="password">Password </label>
-          <input className="input input-bordered w-full border rounded-sm border-gray-300  mb-4 mt-2 max-w-xs"
+          <input className="input input-bordered w-full border rounded-sm border-gray-300 mb-2 mt-2 max-w-xs"
             onChange={onChange}
             value={loginData.password}
             type="password"
@@ -85,26 +85,27 @@ const LoginPage = () => {
             required
           />
         </div>
+        <div className="flex items-center">
+          <input
+            id="remember-me"
+            name="remember-me"
+            type="checkbox"
+            className="w-4 h-4 mr-1 text-green-600 border-gray-300 rounded focus:ring-green-500"
+          />       
+          <label className="ml-1" htmlFor="remember-me">
+            Remember me?
+          </label>
+        </div>
         <br />
-        <input
-      id="remember-me"
-      name="remember-me"
-      type="checkbox"
-      className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
-    />
-    <label htmlFor="remember-me" className="block ml-2 text-sm text-gray-900">
-      Remember me
-    </label>
-        <br />
-        <button className="btn btn-primary flex justify-center" type="submit">Login</button>
+        <button className="btn btn-primary inline-flex justify-center mx-auto w-full" type="submit">Login</button>
       </form>
       <br />
-      <a className="btn btn-secondary flex justify-center ">I'm a Student</a>
+      <a className="btn btn-secondary flex justify-center">I'm a Student</a>
       <br />
       <div>
-        Do not have an account?{" "}
+        Don't have an account?{" "}
         <div>
-        <a className="btn btn-secondary" href="/auth/register">Create an account</a>
+        <a className="btn btn-secondary flex justify-center" href="/auth/register">Create an account</a>
         </div>
       </div>
     </div>
