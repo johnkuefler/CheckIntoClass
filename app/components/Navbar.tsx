@@ -3,10 +3,10 @@ import LogoutButton from "./LogoutButton";
 
 const Navbar = () => {
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-accent">
       <div className="flex-1">
         <a><img
-          src="check-into-class-logo.png"
+          src="/check-into-class-logo.png"
           alt="Check Into Class Logo"
           height="30"
           width="30"

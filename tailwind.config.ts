@@ -45,6 +45,7 @@ const config: Config = {
           secondary: "#17a2b8",
           "secondary-focus": "#138496",
           "secondary-content": "#ffffff",
+          accent: "#F8F9FA"
         },
       },
     ],
