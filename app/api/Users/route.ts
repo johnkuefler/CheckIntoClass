@@ -1,5 +1,4 @@
-// app/api/Users/route.ts
-
+// app/api/users/route.ts
 
 import bcrypt from "bcrypt";
 import prisma from "@/app/lib/prisma";
