@@ -11,3 +11,27 @@ export async function GET(
   });
   return NextResponse.json(course);
 }
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id;
+  const data = await request.json();
+  const course = await prisma.course.update({
+    where: { id: parseInt(id, 10) },
+    data: data,
+  });
+  return NextResponse.json(course);
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id;
+  await prisma.course.delete({
+    where: { id: parseInt(id, 10) },
+  });
+  return new Response(null, { status: 204 });
+}
