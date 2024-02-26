@@ -11,6 +11,14 @@ export async function GET(
   });
   return NextResponse.json(course);
 }
+export async function GETALL(
+    request: NextRequest,
+    { params }: { params: { id: string } }
+  ) {
+    const id = params.id;
+    const course = await prisma.course.findMany();
+    return NextResponse.json(course);
+  }
 
 export async function PUT(
   request: NextRequest,
