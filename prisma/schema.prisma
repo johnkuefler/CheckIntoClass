@@ -27,6 +27,7 @@ model User {
   userRoles       UserRole[]
   departmentUsers DepartmentUser[]
   delegations     Delegation[]
+  courses         Course[]
 }
 
 model Role {
@@ -100,6 +101,9 @@ model Course {
 
   departmentId Int
   department   Department @relation(fields: [departmentId], references: [id])
+
+  userId       Int
+  user         User @relation(fields: [userId], references: [id])
 
   delegations  Delegation[]
   enrollments  Enrollment[]
