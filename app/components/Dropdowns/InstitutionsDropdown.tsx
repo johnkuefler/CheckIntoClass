@@ -1,29 +1,32 @@
-"use client"
+"use client";
 
 import { use, useEffect, useState } from "react";
 
 const InstitutionsDropdown = () => {
-    const [institutions, setInstitutions] = useState([]);
+  const [institutions, setInstitutions] = useState([]);
 
-    useEffect(() => {
-        const fetchInstitutions = async () => {
-            const response = await fetch("/api/institutions");
-            const data = await response.json();
-            setInstitutions(data);
-        };
+  useEffect(() => {
+    const fetchInstitutions = async () => {
+      const response = await fetch("/api/institutions");
+      const data = await response.json();
+      setInstitutions(data);
+    };
 
-        fetchInstitutions();
-    }, []);
+    fetchInstitutions();
+  }, []);
 
-    return (
-        <select className="select select-bordered w-full max-w-xs">
-            {institutions.map((institution) => (
-                <option key={institution.id} value={institution.id}>
-                    {institution.name}
-                </option>
-            ))}
-        </select>
-    );
-}
+  return (
+    <select
+      className="select select-bordered w-full max-w-xs"
+      aria-label="Select Institution"
+    >
+      {institutions.map((institution) => (
+        <option key={institution.id} value={institution.id}>
+          {institution.name}
+        </option>
+      ))}
+    </select>
+  );
+};
 
 export default InstitutionsDropdown;
