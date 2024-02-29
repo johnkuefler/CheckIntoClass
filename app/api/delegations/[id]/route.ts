@@ -11,3 +11,16 @@ export async function GET(
   });
   return NextResponse.json(delegation);
 }
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id;
+  const data = await request.json();
+  const delegation = await prisma.delegation.update({
+    where: { id: parseInt(id, 10) },
+    data: data,
+  });
+  return NextResponse.json(delegation);
+}
