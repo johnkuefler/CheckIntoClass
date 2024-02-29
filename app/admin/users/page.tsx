@@ -1,78 +1,78 @@
 "use client";
-import InstitutionModal from "@/app/components/Admin/InstitutionsModal";
+import UserModal from "@/app/components/Admin/UsersModal";
 import { useState, useEffect } from "react";
 
-const InstitutionPage = () => {
-  const [institutions, setInstitutions] = useState([]);
-  const [selectedInstitution, setSelectedInstitution] = useState(null);
+const UserPage = () => {
+  const [Users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
-    // Fetch institutions from your API
-    fetchInstitutions();
+    // Fetch Users from your API
+    fetchUsers();
   }, []);
 
-  const fetchInstitutions = async () => {
-    const response = await fetch("/api/institutions");
+  const fetchUsers = async () => {
+    const response = await fetch("/api/Users");
     const data = await response.json();
-    setInstitutions(data);
+    setUsers(data);
   };
 
-  const openModal = (institution = null) => {
-    setSelectedInstitution(institution);
-    setIsEditMode(!!institution);
+  const openModal = (User = null) => {
+    setSelectedUser(User);
+    setIsEditMode(!!User);
     setShowModal(true);
   };
 
-  const handleSave = async (institutionData) => {
-    const url = institutionData.id
-      ? `/api/institutions/${institutionData.id}`
-      : "/api/institutions";
-    const method = institutionData.id ? "PUT" : "POST";
+  const handleSave = async (UserData) => {
+    const url = UserData.id
+      ? `/api/Users/${UserData.id}`
+      : "/api/Users";
+    const method = UserData.id ? "PUT" : "POST";
 
     const response = await fetch(url, {
       method: method,
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(institutionData),
+      body: JSON.stringify(UserData),
     });
 
     if (response.ok) {
-      // Refresh the institutions list
-      fetchInstitutions();
+      // Refresh the Users list
+      fetchUsers();
       setShowModal(false);
     } else {
       // Handle errors
-      console.error("Failed to save the institution");
+      console.error("Failed to save the User");
     }
   };
 
-  const handleDelete = async (institutionId) => {
+  const handleDelete = async (UserId) => {
     const confirmed = window.confirm(
-      "Are you sure you want to delete this institution?"
+      "Are you sure you want to delete this User?"
     );
     if (confirmed) {
-      const response = await fetch(`/api/institutions/${institutionId}`, {
+      const response = await fetch(`/api/Users/${UserId}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
-        // Refresh the institutions list
-        fetchInstitutions();
+        // Refresh the Users list
+        fetchUsers();
       } else {
         // Handle errors
-        console.error("Failed to delete the institution");
+        console.error("Failed to delete the User");
       }
     }
   };
 
   return (
     <div>
-      <h3 className="text-3xl font-semibold">Manage Institutions</h3>
+      <h3 className="text-3xl font-semibold">Manage Users</h3>
       <button onClick={() => openModal()} className="btn btn-primary mt-4">
-        Add Institution
+        Add User
       </button>
       <div className="overflow-x-auto mt-6">
         <table className="table w-full">
@@ -80,25 +80,26 @@ const InstitutionPage = () => {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Code</th>
+              <th>Institution</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {/* Institutions data */}
-            {institutions.map((institution) => (
-              <tr key={institution.id}>
-                <td>{institution.name}</td>
-                <td>{institution.code}</td>
+            {/* Users data */}
+            {Users.map((User) => (
+              <tr key={User.id}>
+                <td>{User.name}</td>
+                <td>{User.institution}</td>
+                <td>{User.department}</td>
                 <td>
                   <button
-                    onClick={() => openModal(institution)}
+                    onClick={() => openModal(User)}
                     className="btn btn-xs btn-success text-white"
                   >
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(institution.id)}
+                    onClick={() => handleDelete(User.id)}
                     className="btn btn-xs btn-error ml-5 text-white"
                   >
                     Delete
@@ -110,8 +111,8 @@ const InstitutionPage = () => {
         </table>
       </div>
       {showModal && (
-        <InstitutionModal
-          institution={selectedInstitution}
+        <UserModal
+          User={selectedUser}
           onSave={handleSave}
           onClose={() => setShowModal(false)}
           isEditMode={isEditMode}
@@ -121,4 +122,4 @@ const InstitutionPage = () => {
   );
 };
 
-export default InstitutionPage;
+export default UserPage;
