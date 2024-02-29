@@ -18,6 +18,7 @@ const getCurrentUser = async () => {
 };
 
 import LogoutButton from "./components/LogoutButton";
+import InstitutionsDropdown from "./components/Dropdowns/InstitutionsDropdown";
 
 export default async function Home() {
   const user = await getCurrentUser();
