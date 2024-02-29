@@ -24,3 +24,14 @@ export async function PUT(
   });
   return NextResponse.json(delegation);
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id;
+  await prisma.delegation.delete({
+    where: { id: parseInt(id, 10) },
+  });
+  return new Response(null, { status: 204 });
+}
