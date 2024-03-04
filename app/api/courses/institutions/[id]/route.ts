@@ -1,41 +1,23 @@
-//And it should only return courses where the institution id matches the id passed in the URL
-
-// app/api/institutions/[id]/route.ts
+// /api/courses/institution/[id].ts
 
 import prisma from "@/app/lib/prisma";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const id = params.id;
-  const institution = await prisma.institution.findUnique({
-    where: { id: parseInt(id, 10) },
+export async function GET(request: NextRequest) {
+  const { id } = request.params as { id: string };
+
+  const courses = await prisma.course.findMany({
+    where: { institutionId: parseInt(id) },
   });
-  return NextResponse.json(institution);
+
+  return NextResponse.json(courses);
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const id = params.id;
+export async function POST(request: NextRequest) {
   const data = await request.json();
-  const institution = await prisma.institution.update({
-    where: { id: parseInt(id, 10) },
-    data: data,
+  const { name, active, nickName, departmentId } = data;
+  const course = await prisma.course.create({
+    data: { name, active, nickName, departmentId },
   });
-  return NextResponse.json(institution);
-}
-
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const id = params.id;
-  await prisma.institution.delete({
-    where: { id: parseInt(id, 10) },
-  });
-  return new Response(null, { status: 204 });
+  return NextResponse.json(course);
 }
