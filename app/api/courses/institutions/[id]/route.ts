@@ -12,12 +12,3 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json(courses);
 }
-
-export async function POST(request: NextRequest) {
-  const data = await request.json();
-  const { name, active, nickName, departmentId } = data;
-  const course = await prisma.course.create({
-    data: { name, active, nickName, departmentId },
-  });
-  return NextResponse.json(course);
-}
