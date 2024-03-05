@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-const DepartmentModal = ({ departments, onSave, onClose, isEditMode }) => {
-    const [name, setName] = useState(departments?.name || '');
-    const [code, setCode] = useState(departments?.code || '');
+const DepartmentModal = ({ department, onSave, onClose, isEditMode }) => {
+    const [name, setName] = useState(department?.name || '');
+    const [code, setCode] = useState(department?.code || '');
   
     const handleSubmit = () => {
-      onSave({ ...departments, name, code });
+      onSave({ ...department, name, code });
     };
   
     return (

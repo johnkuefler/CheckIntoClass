@@ -111,7 +111,7 @@ const DepartmentsPage = () => {
       </div>
       {showModal && (
         <DepartmentModal
-          departments={selectedDepartments}
+          department={selectedDepartments}
           onSave={handleSave}
           onClose={() => setShowModal(false)}
           isEditMode={isEditMode}
