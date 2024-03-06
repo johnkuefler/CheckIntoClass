@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState } from "react";
 
-const InstitutionsDropdown = () => {
+const InstitutionsDropdown = ({ onInstitutionChange }) => {
   const [institutions, setInstitutions] = useState([]);
 
   useEffect(() => {
@@ -15,10 +15,16 @@ const InstitutionsDropdown = () => {
     fetchInstitutions();
   }, []);
 
+  const handleInstitutionChange = (event) => {
+      const selectedValue = event.target.value;
+      onInstitutionChange(selectedValue);
+  };
+
   return (
     <select
       className="select select-bordered w-full max-w-xs"
       aria-label="Select Institution"
+      onChange={handleInstitutionChange}
     >
       {institutions.map((institution) => (
         <option key={institution.id} value={institution.id}>

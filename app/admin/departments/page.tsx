@@ -31,6 +31,8 @@ const DepartmentsPage = () => {
       : "/api/departments";
     const method = DepartmentsData.id ? "PUT" : "POST";
 
+    console.log(JSON.stringify(DepartmentsData));
+
     const response = await fetch(url, {
       method: method,
       headers: {
