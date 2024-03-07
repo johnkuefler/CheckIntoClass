@@ -9,26 +9,58 @@ const SALT_ROUNDS = 10; // Adjust this based on your security requirements
 
 
 export async function GET(request: NextRequest) {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+
+
+
+    include: {
+      institution: true,
+      departmentUsers: {
+        select: {
+          departmentId: true,
+          department: {
+            select: {
+              name: true,
+            },
+        },
+      },
+   
+    },
+  },
+    
+  
+  });
   return NextResponse.json(users);
 }
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
-  const {firstName,lastName,email,emailVerified,password,image,institutionId } = data;
+  const {id, firstName, lastName, email, emailVerified, password, image, institutionId, departmentId} = data;
 
   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
   
   const users = await prisma.user.create({
     data: {
+      id,
       firstName,
       lastName,
       email,
       emailVerified,
       password: hashedPassword,
       image,
-      institutionId
+      institutionId,
+      
     },
+    include: {
+      
+      
+      departmentUsers: {
+        select: {
+          departmentId: true,
+        },
+      },
+    },
+    
   });
 
   return NextResponse.json(users);

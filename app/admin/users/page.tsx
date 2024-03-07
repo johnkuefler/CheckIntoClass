@@ -81,14 +81,14 @@ const UserPage = () => {
             <tr>
               <th>Name</th>
               <th>Institution</th>
-              <th>Actions</th>
+              <th>Departments</th>
             </tr>
           </thead>
           <tbody>
             {/* Users data */}
             {Users.map((User) => (
-              <tr key={User.id}>
-                <td>{User.name}</td>
+              <tr key={User.userId}>
+                <td>{User.firstName} {User.lastName}</td>
                 <td>{User.institution}</td>
                 <td>{User.department}</td>
                 <td>
@@ -99,7 +99,7 @@ const UserPage = () => {
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(User.id)}
+                    onClick={() => handleDelete(User.userId)}
                     className="btn btn-xs btn-error ml-5 text-white"
                   >
                     Delete
