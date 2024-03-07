@@ -4,14 +4,15 @@ import InstitutionsDropdown from "../Dropdowns/InstitutionsDropdown";
 const DepartmentModal = ({ department, onSave, onClose, isEditMode }) => {
     const [name, setName] = useState(department?.name || '');
     const [code, setCode] = useState(department?.code || '');
-    const [institution, setInstitution] = useState(department?.institution?.id || null);
+    const [institutionId, setInstitutionId] = useState(department?.institutionId || null);
 
     const handleDropdownChange = (selectedValue) => {
-        setInstitution(selectedValue);
+      setInstitutionId(selectedValue);
     }
   
     const handleSubmit = () => {
-      onSave({ ...department, name, code , institution });
+      var institutionIdAsInt = parseInt(institutionId);
+      onSave({ ...department, name, code, institutionId: institutionIdAsInt });
     };
   
     return (
