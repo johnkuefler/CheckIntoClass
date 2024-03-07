@@ -19,7 +19,7 @@ export async function PUT(
 ) {
     const id = params.id;
     const data = await request.json();
-    const checkin = await prisma.institution.update({
+    const checkin = await prisma.checkin.update({
         where: { id: parseInt(id, 10) },
         data: data,
     });
