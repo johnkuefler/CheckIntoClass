@@ -8,26 +8,31 @@ import { NextResponse, type NextRequest } from "next/server";
 const SALT_ROUNDS = 10; // Adjust this based on your security requirements
 
 
+
 export async function GET(request: NextRequest) {
   const users = await prisma.user.findMany({
 
-
-
     include: {
-      institution: true,
+      institution: { 
+        select: {
+          name: true,
+
+        },
+      },
       departmentUsers: {
         select: {
           departmentId: true,
           department: {
             select: {
               name: true,
+              id: true,
+              code: true,
+              institutionId: true,
             },
+          },
         },
       },
-   
     },
-  },
-    
   
   });
   return NextResponse.json(users);
@@ -35,31 +40,24 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
-  const {id, firstName, lastName, email, emailVerified, password, image, institutionId, departmentId} = data;
+  const {id, firstName, lastName, email, emailVerified, password, image, institutionId} = data;
 
   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
   
   const users = await prisma.user.create({
     data: {
-      id,
+    
       firstName,
       lastName,
       email,
       emailVerified,
       password: hashedPassword,
       image,
-      institutionId,
+      institution: { connect: { id: institutionId} },
+
       
     },
-    include: {
-      
-      
-      departmentUsers: {
-        select: {
-          departmentId: true,
-        },
-      },
-    },
+
     
   });
 

@@ -89,8 +89,8 @@ const UserPage = () => {
             {Users.map((User) => (
               <tr key={User.userId}>
                 <td>{User.firstName} {User.lastName}</td>
-                <td>{User.institution}</td>
-                <td>{User.department}</td>
+                <td>{User.institution.name}</td>
+                <td>{User.departmentUsers.name}</td>
                 <td>
                   <button
                     onClick={() => openModal(User)}

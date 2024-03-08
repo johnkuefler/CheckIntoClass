@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState } from "react";
 
-const InstitutionsDropdown = () => {
+const InstitutionsDropdown = ({ value, onSelect }) => {
   const [institutions, setInstitutions] = useState([]);
 
   useEffect(() => {

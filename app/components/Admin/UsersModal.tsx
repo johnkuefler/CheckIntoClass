@@ -1,15 +1,16 @@
 import { useState } from "react";
 import InstitutionsDropdown from "../Dropdowns/InstitutionsDropdown";
+import DepartmentDropdown from "../Dropdowns/DepartmentDropdown";
 
 const UserModal = ({ User, onSave, onClose, isEditMode }) => {
     const [firstName, setfirstName] = useState(User?.firstName || '');
     const [lastName, setlastName] = useState(User?.lastName || '');
-    const [institution, setInstitution] = useState(User?.institution || '');
+    const [institutionId, setInstitutionId] = useState(User?.institutionId || {});
     const [department, setDepartment] = useState(User?.department || '');
     const [email, setEmail] = useState(User?.email || '');
     const [password, setPassword] = useState(User?.password || '');  
     const handleSubmit = () => {
-      onSave({ ...User, institution, department, firstName, lastName, email, password}); 
+      onSave({ ...User, institutionId, department, firstName, lastName, email, password}); 
       
     };
   
@@ -22,9 +23,10 @@ const UserModal = ({ User, onSave, onClose, isEditMode }) => {
           <input type="text" placeholder="Email" className="input input-bordered w-full my-2" value={email} onChange={(e) => setEmail(e.target.value)} />
           <input type="password" placeholder="Password" className="input input-bordered w-full my-2" value={password} onChange={(e) => setPassword(e.target.value)} />
          
-          <InstitutionsDropdown value={institution.id} onSelect={(selectedInstitution) => setInstitution(selectedInstitution)} />
+          <InstitutionsDropdown value={institutionId.id} onSelect={(selectedInstitution) => setInstitutionId(selectedInstitution)} />
 
-          <input type="text" placeholder="Department" className="input input-bordered w-full my-2" value={department} onChange={(e) => setDepartment(e.target.value)} />
+
+          <DepartmentDropdown value={department.id} onSelect={(selectedDepartment) => setDepartment(selectedDepartment)} />
           <div className="modal-action">
             <button onClick={handleSubmit} className="btn btn-primary">Save</button>
             <button onClick={onClose} className="btn">Cancel</button>
