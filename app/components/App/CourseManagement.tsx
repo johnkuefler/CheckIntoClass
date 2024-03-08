@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import CoursesModal from "@/app/components/App/CoursesModal";
 
-const CourseManagement = () => {
+const CourseManagement = ({ currentUser }) => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -13,8 +13,8 @@ const CourseManagement = () => {
     fetchCourses();
   }, []);
 
-  const fetchCourses= async () => {
-    const response = await fetch("/api/courses");
+  const fetchCourses= async () => { // cannot currently verify that this works
+    const response = await fetch(`/api/courses/${currentUser}`);
     const data = await response.json();
     setCourses(data);
   };
@@ -81,6 +81,8 @@ const CourseManagement = () => {
             <tr>
               <th>Name</th>
               <th>NickName</th>
+              <th>Department</th>
+              <th>Instructor</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -90,6 +92,8 @@ const CourseManagement = () => {
               <tr key={course.id}>
                 <td>{course.name}</td>
                 <td>{course.nickName}</td>
+                <td>{course.department.name}</td>
+                <td>`${course.user.firstName} {course.user.lastName}`</td>
                 <td>
                   <button
                     onClick={() => openModal(course)}
