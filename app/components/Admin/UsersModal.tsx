@@ -26,7 +26,7 @@ const UserModal = ({ User, onSave, onClose, isEditMode }) => {
           <InstitutionsDropdown value={institutionId.id} onSelect={(selectedInstitution) => setInstitutionId(selectedInstitution)} />
 
 
-          <DepartmentDropdown value={department.id} onSelect={(selectedDepartment) => setDepartment(selectedDepartment)} />
+          <DepartmentDropdown value={department.id} onSelect={(selectedDepartment) => setDepartment(selectedDepartment.id)} />
           <div className="modal-action">
             <button onClick={handleSubmit} className="btn btn-primary">Save</button>
             <button onClick={onClose} className="btn">Cancel</button>

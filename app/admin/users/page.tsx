@@ -27,16 +27,24 @@ const UserPage = () => {
 
   const handleSave = async (UserData) => {
     const url = UserData.id
-      ? `/api/Users/${UserData.id}`
-      : "/api/Users";
+    ? `/api/Users/${UserData.id}`
+    : "/api/Users";
     const method = UserData.id ? "PUT" : "POST";
 
+  // Remove 'id' property from UserData before sending it to the server
+    const { id, institutionId, department, departmentUsers, ...dataWithoutInstitutionId } = UserData;
+
+    const updatedData = {
+      ...dataWithoutInstitutionId,
+      institution: { connect: { id: institutionId } },
+      department: { connect: { id: department } },
+    };    
     const response = await fetch(url, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(UserData),
+    method: method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updatedData),
     });
 
     if (response.ok) {
