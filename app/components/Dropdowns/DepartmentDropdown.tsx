@@ -7,7 +7,7 @@ const DepartmentDropdown = () => {
 
     useEffect(() => {
         const fetchDepartments = async () => {
-            const respnose = await fetch ("/api/departments");
+            const response = await fetch ("/api/departments");
             const data = await response.json();
             setDepartments(data);
         };
