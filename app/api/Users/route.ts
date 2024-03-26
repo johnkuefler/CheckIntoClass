@@ -40,23 +40,29 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
-  const {id, firstName, lastName, email, emailVerified, password, image, institutionId} = data;
+  const {id, firstName, lastName, email, emailVerified, password, image, institutionId, departmentId} = data;
 
+  const departmentIds = [departmentId];
+  console.log(departmentIds);
   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
   
   const users = await prisma.user.create({
     data: {
-    
+
       firstName,
       lastName,
       email,
       emailVerified,
       password: hashedPassword,
       image,
-      institution: { connect: { id: institutionId} },
-
-      
-    },
+      institutionId: institutionId,
+      departmentUsers: {
+        createMany: {
+          data: departmentIds.map(departmentId => ({
+            departmentId
+          })),
+        },
+      },    },
 
     
   });

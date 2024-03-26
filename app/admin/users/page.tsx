@@ -31,20 +31,22 @@ const UserPage = () => {
     : "/api/Users";
     const method = UserData.id ? "PUT" : "POST";
 
-  // Remove 'id' property from UserData before sending it to the server
-    const { id, institutionId, department, departmentUsers, ...dataWithoutInstitutionId } = UserData;
+console.log(UserData);
 
-    const updatedData = {
-      ...dataWithoutInstitutionId,
-      institution: { connect: { id: institutionId } },
-      department: { connect: { id: department } },
-    };    
+  // Remove 'id' property from UserData before sending it to the server
+    //const { id, institutionId, department, departmentUsers, ...dataWithoutInstitutionId } = UserData;
+
+    // const updatedData = {
+    //   ...dataWithoutInstitutionId,
+    //   institution: { connect: { id: institutionId } },
+    //   department: { connect: { id: department } },
+    // };    
     const response = await fetch(url, {
     method: method,
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(updatedData),
+    body: JSON.stringify(UserData),
     });
 
     if (response.ok) {

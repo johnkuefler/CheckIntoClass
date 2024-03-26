@@ -6,11 +6,11 @@ const UserModal = ({ User, onSave, onClose, isEditMode }) => {
     const [firstName, setfirstName] = useState(User?.firstName || '');
     const [lastName, setlastName] = useState(User?.lastName || '');
     const [institutionId, setInstitutionId] = useState(User?.institutionId || {});
-    const [department, setDepartment] = useState(User?.department || '');
+    const [departmentId, setDepartmentId] = useState(User?.department || '');
     const [email, setEmail] = useState(User?.email || '');
     const [password, setPassword] = useState(User?.password || '');  
     const handleSubmit = () => {
-      onSave({ ...User, institutionId, department, firstName, lastName, email, password}); 
+      onSave({ ...User, institutionId, departmentId, firstName, lastName, email, password}); 
       
     };
   
@@ -26,7 +26,7 @@ const UserModal = ({ User, onSave, onClose, isEditMode }) => {
           <InstitutionsDropdown value={institutionId.id} onSelect={(selectedInstitution) => setInstitutionId(selectedInstitution)} />
 
 
-          <DepartmentDropdown value={department.id} onSelect={(selectedDepartment) => setDepartment(selectedDepartment.id)} />
+          <DepartmentDropdown value={departmentId?.id} onSelect={(selectedDepartment) => setDepartmentId(selectedDepartment)} />
           <div className="modal-action">
             <button onClick={handleSubmit} className="btn btn-primary">Save</button>
             <button onClick={onClose} className="btn">Cancel</button>
