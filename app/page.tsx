@@ -36,7 +36,7 @@ export default async function Home() {
 
   return (
     <>
-      <CourseManagement/>
+      <CourseManagement currentUser={user}/>
     </>
   );
 }

@@ -11,14 +11,6 @@ export async function GET(
   });
   return NextResponse.json(course);
 }
-export async function GETALL(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-  ) {
-    const id = params.id;
-    const course = await prisma.course.findMany();
-    return NextResponse.json(course);
-  }
 
 export async function PUT(
   request: NextRequest,
@@ -28,7 +20,13 @@ export async function PUT(
   const data = await request.json();
   const course = await prisma.course.update({
     where: { id: parseInt(id, 10) },
-    data: data,
+    data: {
+      name: data.name,
+      active: data.active,
+      nickName: data.nickName,
+      departmentId: data.departmentId,
+      userId: data.userId,
+    },
   });
   return NextResponse.json(course);
 }

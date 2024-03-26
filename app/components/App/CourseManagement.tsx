@@ -14,8 +14,12 @@ const CourseManagement = ({ currentUser }) => {
   }, []);
 
   const fetchCourses= async () => { // cannot currently verify that this works
-    const response = await fetch(`/api/courses/${currentUser}`);
-    const data = await response.json();
+    const response = await fetch(`/api/courses/instructors/${currentUser.id}`);
+    let data = await response.json();
+    if (data == null) {
+      data = [];
+    }
+
     setCourses(data);
   };
 
@@ -26,6 +30,9 @@ const CourseManagement = ({ currentUser }) => {
   };
 
   const handleSave = async (courseData) => {
+
+    console.log(courseData);
+
     const url = courseData.id
       ? `/api/courses/${courseData.id}`
       : "/api/courses";
@@ -54,7 +61,7 @@ const CourseManagement = ({ currentUser }) => {
       "Are you sure you want to delete this course?"
     );
     if (confirmed) {
-      const response = await fetch(`/api/course/${courseId}`, {
+      const response = await fetch(`/api/courses/${courseId}`, {
         method: "DELETE",
       });
 
@@ -93,7 +100,7 @@ const CourseManagement = ({ currentUser }) => {
                 <td>{course.name}</td>
                 <td>{course.nickName}</td>
                 <td>{course.department.name}</td>
-                <td>`${course.user.firstName} {course.user.lastName}`</td>
+                <td>{course.user.firstName} {course.user.lastName}</td>
                 <td>
                   <button
                     onClick={() => openModal(course)}

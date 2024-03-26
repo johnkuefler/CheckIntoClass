@@ -9,6 +9,8 @@ const DepartmentDropdown = ({ onDepartmentChange }) => {
         const fetchDepartments = async () => {
             const response = await fetch ("/api/departments");
             const data = await response.json();
+            // insert an empty department at the beginning of the list
+            data.unshift({ id: null, name: "Select Department" });
             setDepartments(data);
         };
 

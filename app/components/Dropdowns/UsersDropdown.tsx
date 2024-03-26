@@ -9,6 +9,8 @@ const UsersDropdown = ({ onUserChange }) => {
     const fetchUsers = async () => {
       const response = await fetch("/api/Users");
       const data = await response.json();
+      // insert an empty user at the beginning of the list
+      data.unshift({ id: null, firstName: "Select User" });
       setUsers(data);
     };
 
