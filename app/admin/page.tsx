@@ -11,6 +11,8 @@ const AdminPage = () => {
       <li><a className="underline text-cyan-400" href="#">Data Exports</a></li>
       <li><a className="underline text-cyan-400" href="/admin/institutions">Manage Institutions</a></li>
       <li><a className="underline text-cyan-400" href="#">Delete Courses</a></li>
+   
+      <li><a className="underline">HI THERE!</a></li>
     </ul>
   </div>
   );
