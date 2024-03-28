@@ -1,40 +1,43 @@
-"use client";
+import { useEffect, useState } from "react";
 
-import { use, useEffect, useState } from "react";
+const DepartmentDropdown = ({ value, onSelect }) => {
+  const [departments, setDepartments] = useState([]);
 
-const DepartmentDropdown = ({ onDepartmentChange }) => {
-    const [departments, setDepartments] = useState([]);
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const response = await fetch("/api/departments");
+        const data = await response.json();
+        setDepartments(data);
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+      }
+    };
 
-    useEffect(() => {
-        const fetchDepartments = async () => {
-            const response = await fetch ("/api/departments");
-            const data = await response.json();
-            // insert an empty department at the beginning of the list
-            data.unshift({ id: null, name: "Select Department" });
-            setDepartments(data);
-        };
+    fetchDepartments();
+  }, []);
 
-        fetchDepartments();
-    },[]);
 
-    const handleDepartmentChange = (event) => {
-        const selectedValue = event.target.value;
-        onDepartmentChange(selectedValue);
-    }
+  const handleSelectChange = (event) => {
+    const selectedDepartmentId = parseInt(event.target.value);
+    onSelect(selectedDepartmentId);
+  };
 
-    return(
-        <select
-            className = "select select-bordered w-full max-w-xs"
-            aria-label="Select Department"
-            onChange={handleDepartmentChange}
-        >
-            {departments.map((department) => (
-                <option key={department.id} value={department.id}>
-                    {department.name}
-                </option>
-            ))}
-        </select>
-    );
+  return (
+    <select
+      className="select select-bordered w-full max-w-xs"
+      aria-label="Select Department"
+      value={value} // Set the selected value
+      onChange={handleSelectChange} // Call onSelect when the selection changes
+    >
+      {departments.map((department) => (
+        <option key={department.id} value={department.id}>
+          {department.name}
+        </option>
+      ))}
+    </select>
+  );
+
 };
 
 export default DepartmentDropdown;
