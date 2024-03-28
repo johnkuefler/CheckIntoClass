@@ -29,6 +29,7 @@ const InstitutionsDropdown = ({ value, onSelect }) => {
       aria-label="Select Institution"
       value={value} // Set the selected value
       onChange={handleSelectChange} // Call onSelect when the selection changes
+      id="institutionDropdown"
     >
       {institutions.map((institution) => (
         <option key={institution.id} value={institution.id}>
