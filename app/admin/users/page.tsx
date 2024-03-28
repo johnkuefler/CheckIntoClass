@@ -100,7 +100,7 @@ console.log(UserData);
               <tr key={User.userId}>
                 <td>{User.firstName} {User.lastName}</td>
                 <td>{User.institution.name}</td>
-                <td>{User.departmentUsers.name}</td>
+                <td>{User.departmentUsers[0]?.department?.name}</td>
                 <td>
                   <button
                     onClick={() => openModal(User)}
