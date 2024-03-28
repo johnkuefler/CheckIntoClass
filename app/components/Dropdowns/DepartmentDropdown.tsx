@@ -17,6 +17,7 @@ const DepartmentDropdown = ({ value, onSelect }) => {
     fetchDepartments();
   }, []);
 
+
   const handleSelectChange = (event) => {
     const selectedDepartmentId = parseInt(event.target.value);
     onSelect(selectedDepartmentId);
@@ -36,6 +37,7 @@ const DepartmentDropdown = ({ value, onSelect }) => {
       ))}
     </select>
   );
+
 };
 
 export default DepartmentDropdown;

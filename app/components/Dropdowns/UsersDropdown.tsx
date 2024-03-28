@@ -2,23 +2,31 @@
 
 import { use, useEffect, useState } from "react";   
 
-const UsersDropdown = () => {
+const UsersDropdown = ({ onUserChange }) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await fetch("/api/Users");
       const data = await response.json();
+      // insert an empty user at the beginning of the list
+      data.unshift({ id: null, firstName: "Select User" });
       setUsers(data);
     };
 
     fetchUsers();
   }, []);
 
+  const handleUserChange = (event) => {
+      const selectedValue = event.target.value;
+      onUserChange(selectedValue);
+  };
+
   return (
     <select
       className="select select-bordered w-full max-w-xs"
       aria-label="Select User"
+      onChange={handleUserChange}
     >
       {users.map((user) => (
         <option key={user.id} value={user.id}>
