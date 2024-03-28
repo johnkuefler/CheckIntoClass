@@ -9,6 +9,7 @@ const InstitutionsDropdown = () => {
     const fetchInstitutions = async () => {
       const response = await fetch("/api/institutions");
       const data = await response.json();
+      data.unshift({ id: null, name: "Select Institution" });
       setInstitutions(data);
     };
 
