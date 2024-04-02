@@ -14,9 +14,25 @@ const CoursesModal = ({ course, onSave, onClose, isEditMode }) => {
         setDepartmentId(selectedValue);
     }
 
-    const handleUserChange = (selectedValue) => {
-        setUserId(selectedValue);
-        console.log(selectedValue);
+    
+    const getCurrentUser = async () => {
+      try {
+        const session = await getServerSession(authOptions);
+        if (!session?.user?.email) return;
+        const currentUser = await prisma.user.findUnique({
+          where: { email: session.user.email },
+        });
+        if (!currentUser) return;
+        return currentUser;
+      } catch (e: any) {
+        // simply ignores if no user is logged in
+        return;
+      }
+    };
+
+    const handleUserChange = (currentUser) => {
+        setUserId(currentUser);
+        console.log(currentUser);
     }
 
     const handleSubmit = () => {
