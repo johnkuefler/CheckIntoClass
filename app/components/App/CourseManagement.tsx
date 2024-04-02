@@ -13,7 +13,8 @@ const CourseManagement = ({ currentUser }) => {
     fetchCourses();
   }, []);
 
-  const fetchCourses= async () => { // cannot currently verify that this works
+  const fetchCourses = async () => {
+    // cannot currently verify that this works
     const response = await fetch(`/api/courses/instructors/${currentUser.id}`);
     let data = await response.json();
     if (data == null) {
@@ -30,7 +31,6 @@ const CourseManagement = ({ currentUser }) => {
   };
 
   const handleSave = async (courseData) => {
-
     console.log(courseData);
 
     const url = courseData.id
@@ -79,9 +79,9 @@ const CourseManagement = ({ currentUser }) => {
     <div>
       <h3 className="text-3xl font-semibold">Manage Courses</h3>
       <button onClick={() => openModal()} className="btn btn-primary mt-4">
-        Add Course 
+        Add Course
       </button>
-      <div className="overflow-x-auto mt-6">
+      <div className="mt-6">
         <table className="table w-full">
           {/* Table headers */}
           <thead>
@@ -100,20 +100,35 @@ const CourseManagement = ({ currentUser }) => {
                 <td>{course.name}</td>
                 <td>{course.nickName}</td>
                 <td>{course.department.name}</td>
-                <td>{course.user.firstName} {course.user.lastName}</td>
                 <td>
-                  <button
-                    onClick={() => openModal(course)}
-                    className="btn btn-xs btn-success text-white"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(course.id)}
-                    className="btn btn-xs btn-error ml-5 text-white"
-                  >
-                    Delete
-                  </button>
+                  {course.user.firstName} {course.user.lastName}
+                </td>
+                <td>
+                  <details className="dropdown">
+                    <summary className="m-1 btn">Actions</summary>
+                    <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+                      <li>
+                        <a href={`/enrollment?courseId=${course.id}`}>
+                          Edit Enrollment
+                        </a>
+                      </li>
+                      <li>
+                        <a>Generate New Checkin Code</a>
+                      </li>
+                      <li>
+                        <a>View Attendance</a>
+                      </li>
+                      <li>
+                        <a>Export Attendance</a>
+                      </li>
+                      <li>
+                        <a onClick={() => openModal(course)}>Edit</a>
+                      </li>
+                      <li>
+                        <a onClick={() => handleDelete(course.id)}>Delete</a>
+                      </li>
+                    </ul>
+                  </details>
                 </td>
               </tr>
             ))}
