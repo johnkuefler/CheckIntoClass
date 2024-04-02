@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DepartmentDropdown from "../Dropdowns/DepartmentDropdown";
 import UsersDropdown from "../Dropdowns/UsersDropdown";
 
@@ -9,31 +9,39 @@ const CoursesModal = ({ course, onSave, onClose, isEditMode }) => {
     const [departmentId, setDepartmentId] = useState(course?.departmentId || null);
     const [userId, setUserId] = useState(course?.userId || null);
     const [active, setActive] = useState(course?.active || null);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const handleDepartmentChange = (selectedValue) => {
         setDepartmentId(selectedValue);
     }
 
-    
-    const getCurrentUser = async () => {
-      try {
-        const session = await getServerSession(authOptions);
-        if (!session?.user?.email) return;
-        const currentUser = await prisma.user.findUnique({
-          where: { email: session.user.email },
-        });
-        if (!currentUser) return;
-        return currentUser;
-      } catch (e: any) {
-        // simply ignores if no user is logged in
-        return;
-      }
-    };
-
     const handleUserChange = (currentUser) => {
         setUserId(currentUser);
         console.log(currentUser);
     }
+
+    useEffect(() => {
+      const getCurrentUser = async () => {
+          try {
+              const session = await getServerSession(authOptions);
+              if (!session?.user?.email) return null;
+              const currentUser = await prisma.user.findUnique({
+                  where: { email: session.user.email },
+              });
+              return currentUser;
+          } catch (error) {
+              console.error("Error fetching current user:", error);
+              return null;
+          }
+      };
+
+      getCurrentUser().then(user => {
+          setCurrentUser(user);
+          setLoading(false); // Set loading to false when user data is fetched
+      });
+  }, []); // Empty dependency array to run only once on component mount
+
 
     const handleSubmit = () => {
       var departmentIdAsInt = parseInt(departmentId);
@@ -44,8 +52,10 @@ const CoursesModal = ({ course, onSave, onClose, isEditMode }) => {
       }
       onSave({ ...course, name, nickName, active: activeAsBool, departmentId: departmentIdAsInt, userId: userIdAsInt });
     };
-  
-    const currentUser = getCurrentUser();
+
+    if (loading) {
+      return <div>Loading...</div>; // Display a loading indicator while fetching user data
+    }
     
     return (
       <div className="modal modal-open">
@@ -60,7 +70,7 @@ const CoursesModal = ({ course, onSave, onClose, isEditMode }) => {
         <label className="label">Department</label>
         <DepartmentDropdown onDepartmentChange={handleDepartmentChange}/>
         <label className="label">Instructor</label>
-        <label className="label">{getCurrentUser}</label>
+        console.log(currentUser);
 
         <div className="modal-action">
         <button onClick={handleSubmit} className="btn btn-primary">Save</button>
