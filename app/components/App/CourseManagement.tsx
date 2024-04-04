@@ -13,6 +13,11 @@ const CourseManagement = ({ currentUser }) => {
     fetchCourses();
   }, []);
 
+  const getCurrentUserId = async () => {
+    // TODO: Make pull the actual user's id
+    return 44;
+  };
+
   const fetchCourses = async () => {
     // cannot currently verify that this works
     const response = await fetch(`/api/courses/instructors/${currentUser.id}`);
@@ -37,6 +42,7 @@ const CourseManagement = ({ currentUser }) => {
       ? `/api/courses/${courseData.id}`
       : "/api/courses";
     const method = courseData.id ? "PUT" : "POST";
+    courseData.userId = await getCurrentUserId();
 
     const response = await fetch(url, {
       method: method,
