@@ -14,11 +14,6 @@ const CoursesModal = ({ course, onSave, onClose, isEditMode }) => {
         setDepartmentId(selectedValue);
     }
 
-    const handleUserChange = (selectedValue) => {
-        setUserId(selectedValue);
-        console.log(selectedValue);
-    }
-
     const handleSubmit = () => {
       var departmentIdAsInt = parseInt(departmentId);
       var userIdAsInt = parseInt(userId);
@@ -42,7 +37,7 @@ const CoursesModal = ({ course, onSave, onClose, isEditMode }) => {
           <label className="label">Department</label>
           <DepartmentDropdown onDepartmentChange={handleDepartmentChange}/>
           <label className="label">Instructor</label>
-          <UsersDropdown onUserChange={handleUserChange}/>
+          
           <div className="modal-action">
             <button onClick={handleSubmit} className="btn btn-primary">Save</button>
             <button onClick={onClose} className="btn">Cancel</button>
