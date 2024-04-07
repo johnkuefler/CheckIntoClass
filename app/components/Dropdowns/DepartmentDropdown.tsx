@@ -8,6 +8,8 @@ const DepartmentDropdown = ({ value, onSelect }) => {
       try {
         const response = await fetch("/api/departments");
         const data = await response.json();
+        // insert "select department" at the beginning of the list
+        data.unshift({ id: null, name: "Select Department" });
         setDepartments(data);
       } catch (error) {
         console.error("Error fetching departments:", error);
