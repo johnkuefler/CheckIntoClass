@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import CoursesModal from "@/app/components/App/CoursesModal";
+import getUser from "@/lib/getUser";
 
 const CourseManagement = ({ currentUser }) => {
   const [courses, setCourses] = useState([]);
@@ -12,11 +13,6 @@ const CourseManagement = ({ currentUser }) => {
     // Fetch courses from your API
     fetchCourses();
   }, []);
-
-  const getCurrentUserId = async () => {
-    // TODO: Make pull the actual user's id
-    return 44;
-  };
 
   const fetchCourses = async () => {
     // cannot currently verify that this works
@@ -42,7 +38,9 @@ const CourseManagement = ({ currentUser }) => {
       ? `/api/courses/${courseData.id}`
       : "/api/courses";
     const method = courseData.id ? "PUT" : "POST";
-    courseData.userId = await getCurrentUserId();
+
+    let userData = await getUser();
+    courseData.userId = userData.id;
 
     const response = await fetch(url, {
       method: method,

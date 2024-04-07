@@ -1,13 +1,11 @@
 
 import { useState } from "react";
 import DepartmentDropdown from "../Dropdowns/DepartmentDropdown";
-import UsersDropdown from "../Dropdowns/UsersDropdown";
 
 const CoursesModal = ({ course, onSave, onClose, isEditMode }) => {
     const [name, setName] = useState(course?.name || '');
     const [nickName, setNickName] = useState(course?.nickName|| '');
     const [departmentId, setDepartmentId] = useState(course?.departmentId || null);
-    const [userId, setUserId] = useState(course?.userId || null);
     const [active, setActive] = useState(course?.active || null);
 
     const handleDepartmentChange = (selectedValue) => {
@@ -16,12 +14,13 @@ const CoursesModal = ({ course, onSave, onClose, isEditMode }) => {
 
     const handleSubmit = () => {
       var departmentIdAsInt = parseInt(departmentId);
-      var userIdAsInt = parseInt(userId);
       var activeAsBool = false;
       if (active === "on") {
         activeAsBool = true;
       }
-      onSave({ ...course, name, nickName, active: activeAsBool, departmentId: departmentIdAsInt, userId: userIdAsInt });
+      console.log(departmentIdAsInt);
+
+      onSave({ ...course, name, nickName, active: activeAsBool, departmentId: departmentIdAsInt });
     };
   
     return (
@@ -35,8 +34,7 @@ const CoursesModal = ({ course, onSave, onClose, isEditMode }) => {
           <input type="checkbox" placeholder="Active"  value={active} onChange={(e) => setActive(e.target.value)} />
 
           <label className="label">Department</label>
-          <DepartmentDropdown onDepartmentChange={handleDepartmentChange}/>
-          <label className="label">Instructor</label>
+          <DepartmentDropdown onSelect={handleDepartmentChange}/>
           
           <div className="modal-action">
             <button onClick={handleSubmit} className="btn btn-primary">Save</button>
