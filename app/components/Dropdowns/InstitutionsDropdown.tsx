@@ -6,13 +6,10 @@ const InstitutionsDropdown = ({ value, onSelect }) => {
 
   useEffect(() => {
     const fetchInstitutions = async () => {
-      try {
-        const response = await fetch("/api/institutions");
-        const data = await response.json();
-        setInstitutions(data);
-      } catch (error) {
-        console.error("Error fetching institutions:", error);
-      }
+      const response = await fetch("/api/institutions");
+      const data = await response.json();
+      data.unshift({ id: null, name: "Select Institution" });
+      setInstitutions(data);
     };
 
     fetchInstitutions();
