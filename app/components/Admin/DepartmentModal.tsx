@@ -17,10 +17,19 @@ const DepartmentModal = ({ department, onSave, onClose, isEditMode }) => {
   
     return (
       <div className="modal modal-open">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">{isEditMode ? 'Edit' : 'Add'} Department</h3>
-          <input type="text" placeholder="Name" className="input input-bordered w-full my-2" value={name} onChange={(e) => setName(e.target.value)} />
-          <input type="text" placeholder="Code" className="input input-bordered w-full my-2" value={code} onChange={(e) => setCode(e.target.value)} />
+        <div className="modal-box form-control">
+          <h3 className="font-bold text-2xl">{isEditMode ? 'Edit' : 'Add'} Department</h3>
+          <div className="label -mb-3">
+            <label htmlFor="name" className="label-text">Department Name</label>
+          </div>
+          <input type="text" placeholder="Name" id ="name" className="input input-bordered w-full my-2" value={name} onChange={(e) => setName(e.target.value)} />
+          <div className="label -mb-3">
+            <label htmlFor="code" className="label-text">Department Code</label>
+          </div>
+          <input type="text" placeholder="Code" id="code" className="input input-bordered w-full my-2" value={code} onChange={(e) => setCode(e.target.value)} />
+          <div className="label -mb-1.5">
+            <label htmlFor="institutionDropdown" className="label-text">Institution</label>
+          </div>
           <InstitutionsDropdown onInstitutionChange={handleDropdownChange}/>
           <div className="modal-action">
             <button onClick={handleSubmit} className="btn btn-primary">Save</button>
