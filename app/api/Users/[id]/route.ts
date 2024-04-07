@@ -1,6 +1,7 @@
 // app/api/users/[id]/route.ts
 
 import prisma from "@/app/lib/prisma";
+import exp from "constants";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(
@@ -21,7 +22,7 @@ export async function PUT(
   const id = params.id;
   const data = await request.json();
   const users = await prisma.user.update({
-    where: { id: parseInt(id, 10) },
+    where: { id: parseInt(id) },
     data: data,
   });
   return NextResponse.json(users);

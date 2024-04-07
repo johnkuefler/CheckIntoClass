@@ -11,9 +11,10 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
     const data = await request.json();
-    const { code, courseId } = data;
+    const { courseId } = data;
+    const code = generateRandomCode();
     const checkinCode = await prisma.checkinCode.create({
-      data: { code, courseId },
+        data: { code, courseId },
     });
     return NextResponse.json(checkinCode);
   }

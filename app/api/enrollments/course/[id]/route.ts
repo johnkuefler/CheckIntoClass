@@ -8,8 +8,8 @@ export async function GET(
     { params }: { params: { id: string } }
 ) {
     const id = params.id;
-    const course = await prisma.course.findUnique({
-        where: { id: parseInt(id, 10) },
+    const enrollmentsForCourse = await prisma.enrollment.findMany({
+        where: { courseId: parseInt(id, 10) },
     });
-    return NextResponse.json(course);
+    return NextResponse.json(enrollmentsForCourse);
 }

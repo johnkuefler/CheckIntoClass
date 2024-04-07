@@ -19,6 +19,8 @@ const getCurrentUser = async () => {
 
 import LogoutButton from "./components/LogoutButton";
 import InstitutionsDropdown from "./components/Dropdowns/InstitutionsDropdown";
+import UsersDropdown from "./components/Dropdowns/UsersDropdown";
+import CourseManagement from "./components/App/CourseManagement";
 
 export default async function Home() {
   const user = await getCurrentUser();
@@ -34,7 +36,7 @@ export default async function Home() {
 
   return (
     <>
-      <h1>Manage Courses Grid will go Here</h1>
+      <CourseManagement currentUser={user}/>
     </>
   );
 }

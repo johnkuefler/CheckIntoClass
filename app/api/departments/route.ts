@@ -8,6 +8,9 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
+
+  console.log(data);
+  
   const { name, code, institutionId } = data;
   const department = await prisma.department.create({
     data: { name, code, institutionId },
