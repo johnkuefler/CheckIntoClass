@@ -8,6 +8,7 @@ const AdminPage = () => {
     <ul className="list-disc ml-5 mt-10">
       <li><a className="underline text-cyan-400" href="/admin/departments">Manage Departments</a></li>
       <li><a className="underline text-cyan-400" href="/admin/users">Manage Users</a></li>
+      {/* Make the following list item a link that will export attendance data */ }
       <li><a className="underline text-cyan-400" href="#">Data Exports</a></li>
       <li><a className="underline text-cyan-400" href="/admin/institutions">Manage Institutions</a></li>
       <li><a className="underline text-cyan-400" href="#">Delete Courses</a></li>
