@@ -10,9 +10,9 @@ export async function GET(
     const checkin = await prisma.checkin.findUnique({
         where: { id: parseInt(id, 10) },
     });
-    
-    const enrollments = await prisma.enrollment.findUnique({
-        where: { id: parseInt(id, 10) },
+
+    const enrollments = await prisma.enrollment.findMany({
+        where: { courseId: parseInt(id, 10) },
     });
 
     return NextResponse.json({checkin, enrollments});

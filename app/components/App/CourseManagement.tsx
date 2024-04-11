@@ -89,15 +89,18 @@ const CourseManagement = ({ currentUser }) => {
     if (response.ok) {
       try {
         const jsonData = await response.json();
+      // Extract check-in data
+      const checkinData = {
+        'Checkin ID': jsonData.checkin.id,
+        'Created At': jsonData.checkin.createdAt,
+      };
 
-
-        // Prepare the data for export
-        const data = [{
-          'Student ID': jsonData.enrollments.studentID,
-          'Student Name': jsonData.enrollments.studentName,
-          'Checkin ID': jsonData.checkin.id,
-          'Created At': jsonData.checkin.createdAt,
-        }];
+      // Prepare the data for export
+      const data = jsonData.enrollments.map((enrollment) => ({
+        'Student ID': enrollment.studentID,
+        'Student Name': enrollment.studentName,
+        ...checkinData, // Include check-in data for each enrollment
+      }));
   
         // Specify the export options
         const options = {
