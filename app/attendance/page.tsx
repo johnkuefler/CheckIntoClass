@@ -80,7 +80,7 @@ console.log(UserData);
 
   return (
     <div>
-      <h3 className="text-3xl font-semibold">Manage Users</h3>
+      <h3 className="text-3xl font-semibold">View Attendance</h3>
       <button onClick={() => openModal()} className="btn btn-primary mt-4">
         Add User
       </button>
@@ -102,18 +102,7 @@ console.log(UserData);
                 <td>{User.institution.name}</td>
                 <td>{User.departmentUsers[0]?.department?.name}</td>
                 <td>
-                  <button
-                    onClick={() => openModal(User)}
-                    className="btn btn-xs btn-success text-white"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(User.userId)}
-                    className="btn btn-xs btn-error ml-5 text-white"
-                  >
-                    Delete
-                  </button>
+                  
                 </td>
               </tr>
             ))}
