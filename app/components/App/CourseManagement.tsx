@@ -163,7 +163,7 @@ const CourseManagement = ({ currentUser }) => {
                         <a>Generate New Checkin Code</a>
                       </li>
                       <li>
-                        <a>View Attendance</a>
+                        <a href={`/attendance?courseId=${course.id}`}>View Attendance</a>
                       </li>
                       <li>
                         <a onClick={() => exportAttendance(course.id)}>{'Export Attendance'}</a>
