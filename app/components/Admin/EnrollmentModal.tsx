@@ -1,21 +1,28 @@
 import { useState } from "react";
 
 const EnrollmentModal = ({ enrollment, onSave, onClose, isEditMode }) => {
-    const [name, setName] = useState(institution?.name || '');
-    const [code, setCode] = useState(institution?.code || '');
+    const [id, setId] = useState(enrollment?.studentID || '');
+    const [name, setName] = useState(enrollment?.studentName || '');
+    const [active, setActive] = useState(enrollment?.active || null); 
   
     const handleSubmit = () => {
-      onSave({ ...institution, name, code });
+      var activeAsBool = false;
+      if (active == "on") {
+          activeAsBool = true;
+      }
+      onSave({ ...enrollment, studentName: name, studentID: id, active: activeAsBool});
     };
   
     return (
       <div className="modal modal-open">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">{isEditMode ? 'Edit' : 'Add'} Institution</h3>
-          <label htmlFor="institutionName">Name</label>
-          <input id="institutionName" type="text" placeholder="Name" className="input input-bordered w-full my-2" value={name} onChange={(e) => setName(e.target.value)} />
-          <label htmlFor="institutionCode">Code</label>
-          <input id="institutionCode" type="text" placeholder="Code" className="input input-bordered w-full my-2" value={code} onChange={(e) => setCode(e.target.value)} />
+          <h3 className="font-bold text-lg">{isEditMode ? 'Edit' : 'Add'} Enrollment</h3>
+          <label htmlFor="studentId">Student Id</label>
+          <input id="studentId" type="text" placeholder="Student Id" className="input input-bordered w-full my-2" value={id} onChange={(e) => setId(e.target.value)} />
+          <label htmlFor="studentName">Student Name</label>
+          <input id="studentName" type="text" placeholder="Student Name" className="input input-bordered w-full my-2" value={name} onChange={(e) => setName(e.target.value)} />
+          <label htmlFor="active">Active</label>
+          <input id="active" type="checkbox" placeholder="Active" value={active} onChange={(e) => setActive(e.target.value)}/>
           <div className="modal-action">
             <button onClick={handleSubmit} className="btn btn-primary">Save</button>
             <button onClick={onClose} className="btn">Cancel</button>

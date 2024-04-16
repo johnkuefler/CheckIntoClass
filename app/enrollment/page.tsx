@@ -1,17 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import EnrollmentModal from "@/app/components/Admin/EnrollmentModal";
 
 const EnrollmentPage = () => {
   const [courseId, setCourseId] = useState(0);
   const [enrollments, setEnrollments] = useState([]);
   const [course, setCourse] = useState({});
+  const [selectedEnrollment, setSelectedEnrollment] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
     const fetchData = async () => {
       const params = new URLSearchParams(window.location.search);
       const courseId = Number(params.get("courseId")) || 0;
-      console.log(courseId);
       setCourseId(courseId);
 
       // fetch course by id
@@ -22,11 +28,59 @@ const EnrollmentPage = () => {
       // fetch enrollments by course id
       const enrollments = await fetch(`/api/enrollments?courseId=${courseId}`);
       const enrollmentData = await enrollments.json();
+      console.log(enrollmentData);
       setEnrollments(enrollmentData);
     };
 
-    fetchData();
-  }, []);
+  const openModal = (enrollment = null) => {
+    setSelectedEnrollment(enrollment);
+    setIsEditMode(!!enrollment);
+    setShowModal(true);
+  };
+
+  const handleSave = async (enrollmentData) => {
+    const url = enrollmentData.id
+      ? `/api/enrollments/${enrollmentData.id}`
+      : "/api/enrollments";
+    const method = enrollmentData.id ? "PUT" : "POST";
+
+    const response = await fetch(url, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(enrollmentData),
+    });
+
+    if (response.ok) {
+      // Refresh the enrollment list
+      fetchData();
+      setShowModal(false);
+    } else {
+      // Handle errors
+      console.error("Failed to save the enrollment");
+    }
+  };
+
+  const handleDelete = async (courseId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this enrollment?"
+    );
+    if (confirmed) {
+      const response = await fetch(`/api/enrollment/${courseId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        // Refresh the institutions list
+        fetchData();
+      } else {
+        // Handle errors
+        console.error("Failed to delete the enrollment");
+      }
+    }
+  };
+
 
   return (
     <div>
@@ -37,6 +91,7 @@ const EnrollmentPage = () => {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student ID</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Active</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -45,14 +100,24 @@ const EnrollmentPage = () => {
               <td className="px-6 py-4 whitespace-nowrap">{enrollment.studentID}</td>
               <td className="px-6 py-4 whitespace-nowrap">{enrollment.studentName}</td>
               <td className="px-6 py-4 whitespace-nowrap flex items-center">
-                <input type="checkbox" checked={enrollment.active} onChange={() => handleActiveChange(enrollment.id)} className="mr-2"/>
-                <button onClick={() => OpenModel(enrollment)} className="mr-2">Edit</button>
+                <input type="checkbox" checked={enrollment.active} disabled={true} className="mr-2"/>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <button onClick={() => openModal(enrollment)} className="mr-2">Edit</button>
                 <button onClick={() => handleDelete(enrollment.id)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {showModal && (
+        <EnrollmentModal
+          enrollment={selectedEnrollment}
+          onSave={handleSave}
+          onClose={() => setShowModal(false)}
+          isEditMode={isEditMode}
+        />
+      )}
     </div>
   );
 };
