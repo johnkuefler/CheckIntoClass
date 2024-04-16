@@ -42,7 +42,7 @@ const EnrollmentPage = () => {
         <tbody className="bg-white divide-y divide-gray-200">
           {enrollments.map((enrollment) => (
             <tr key={enrollment.id}>
-              <td className="px-6 py-4 whitespace-nowrap">{enrollment.studentId}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{enrollment.studentID}</td>
               <td className="px-6 py-4 whitespace-nowrap">{enrollment.studentName}</td>
               <td className="px-6 py-4 whitespace-nowrap flex items-center">
                 <input type="checkbox" checked={enrollment.active} onChange={() => handleActiveChange(enrollment.id)} className="mr-2"/>
