@@ -10,7 +10,8 @@ const EnrollmentPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const params = new URLSearchParams(window.location.search);
-      const courseId = params.get("courseId");
+      const courseId = Number(params.get("courseId")) || 0;
+      console.log(courseId);
       setCourseId(courseId);
 
       // fetch course by id
@@ -19,7 +20,9 @@ const EnrollmentPage = () => {
       setCourse(data);
 
       // fetch enrollments by course id
-      // Ensure you have a similar fetch call here if needed
+      const enrollments = await fetch(`/api/enrollments?courseId=${courseId}`);
+      const enrollmentData = await enrollments.json();
+      setEnrollments(enrollmentData);
     };
 
     fetchData();
@@ -27,7 +30,29 @@ const EnrollmentPage = () => {
 
   return (
     <div>
-      <h1>Enrollments for {course.name}</h1>
+      <h1 className="text-2xl font-semibold mb-4">Enrollments for {course?.name}</h1>
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student ID</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Active</th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {enrollments.map((enrollment) => (
+            <tr key={enrollment.id}>
+              <td className="px-6 py-4 whitespace-nowrap">{enrollment.studentId}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{enrollment.studentName}</td>
+              <td className="px-6 py-4 whitespace-nowrap flex items-center">
+                <input type="checkbox" checked={enrollment.active} onChange={() => handleActiveChange(enrollment.id)} className="mr-2"/>
+                <button onClick={() => OpenModel(enrollment)} className="mr-2">Edit</button>
+                <button onClick={() => handleDelete(enrollment.id)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
