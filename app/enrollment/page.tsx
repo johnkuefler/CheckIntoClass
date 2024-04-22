@@ -2,14 +2,18 @@
 
 import { useEffect, useState } from "react";
 import EnrollmentModal from "@/app/components/Admin/EnrollmentModal";
+import AddStudentModal from "@/app/components/App/AddStudentModal";
+import { connect } from "http2";
 
 const EnrollmentPage = () => {
   const [courseId, setCourseId] = useState(0);
   const [enrollments, setEnrollments] = useState([]);
   const [course, setCourse] = useState({});
-  const [selectedEnrollment, setSelectedEnrollment] = useState(null);
+  const [selectedEnrollment, setSelectedEnrollment] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [showAddStudentModal, setShowAddStudentModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+
 
   useEffect(() => {
     fetchData();
@@ -32,10 +36,14 @@ const EnrollmentPage = () => {
       setEnrollments(enrollmentData);
     };
 
-  const openModal = (enrollment = null) => {
+  const openModal = (enrollment = {} ) => {
     setSelectedEnrollment(enrollment);
     setIsEditMode(!!enrollment);
     setShowModal(true);
+  };
+
+  const openAddStudentModal = () => {
+    setShowAddStudentModal(true);
   };
 
   const handleSave = async (enrollmentData) => {
@@ -62,12 +70,44 @@ const EnrollmentPage = () => {
     }
   };
 
+  const handleAddStudent = async (studentData, courseId) => {
+    if (!courseId) {
+      console.error("Course ID is undefined or null");
+      return;
+    }
+
+    const url = studentData.id
+      ? `/api/enrollments/${studentData.id}`
+      : "/api/enrollments";
+    const method = studentData.id ? "PUT" : "POST";
+
+    const response = await fetch(url, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...studentData, 
+        course: { connect: { id: courseId } }, 
+      }),
+    });
+
+    if (response.ok) {
+      // Refresh the enrollment list
+      fetchData();
+      setShowModal(false);
+    } else {
+      // Handle errors
+      console.error("Failed to save the enrollment");
+    }
+  };
+
   const handleDelete = async (courseId) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this enrollment?"
     );
     if (confirmed) {
-      const response = await fetch(`/api/enrollment/${courseId}`, {
+      const response = await fetch(`/api/enrollments/${courseId}`, {
         method: "DELETE",
       });
 
@@ -85,6 +125,7 @@ const EnrollmentPage = () => {
   return (
     <div>
       <h1 className="text-2xl font-semibold mb-4">Enrollments for {course?.name}</h1>
+      <button onClick={openAddStudentModal}>Add Student</button>
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
@@ -96,15 +137,15 @@ const EnrollmentPage = () => {
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {enrollments.map((enrollment) => (
-            <tr key={enrollment.id}>
+            <tr key={enrollment?.id}>
               <td className="px-6 py-4 whitespace-nowrap">{enrollment.studentID}</td>
               <td className="px-6 py-4 whitespace-nowrap">{enrollment.studentName}</td>
               <td className="px-6 py-4 whitespace-nowrap flex items-center">
-                <input type="checkbox" checked={enrollment.active} disabled={true} className="mr-2"/>
+                <input type="checkbox" checked={enrollment.active || false} disabled={true} className="mr-2"/>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <button onClick={() => openModal(enrollment)} className="mr-2">Edit</button>
-                <button onClick={() => handleDelete(enrollment.id)}>Delete</button>
+                <button onClick={() => handleDelete(enrollment?.id)}>Delete</button>
               </td>
             </tr>
           ))}
@@ -118,6 +159,15 @@ const EnrollmentPage = () => {
           isEditMode={isEditMode}
         />
       )}
+
+{showAddStudentModal && (
+        <AddStudentModal
+          enrollment={selectedEnrollment}
+          onSave={(studentData) => handleAddStudent(studentData, course?.id)}
+          onClose={() => setShowModal(false)}
+          courseId={course?.id}
+        />
+      )}  
     </div>
   );
 };
