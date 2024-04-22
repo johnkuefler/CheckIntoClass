@@ -2,26 +2,31 @@
 
 import { useEffect, useState } from "react";
 
-const CheckinCodePage = () => {
+const CheckinPage = () => {
   const [courseId, setCourseId] = useState(0);
-  const [enrollments, setEnrollments] = useState([]);
+  const [checkinCode, setCheckinCode] = useState(null);
   const [course, setCourse] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       const params = new URLSearchParams(window.location.search);
-      const courseId = params.get("courseId");
-      setCourseId(courseId);
+      const courseIdParam = params.get("courseId");
+      if (courseIdParam) {
+        const courseId = parseInt(courseIdParam, 10);
+        setCourseId(courseId);
 
-      // fetch course by id
-      const response = await fetch(`/api/courses/${courseId}`);
-      const data = await response.json();
-      setCourse(data);
+        //fetch a checkin code via checkin-codes api route
+        const checkinResponse = await fetch(`/api/checkin-codes`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ courseId: courseId }),
+        });
 
-      const checkinCodeResponse = await fetch(`/api/checkin-codes`)
-      console.log(checkinCodeResponse);
-      // fetch checkin code by course id
-      // Ensure you have a similar fetch call here if needed
+        const checkinData = await checkinResponse.json();
+        setCheckinCode(checkinData.code);
+      }
     };
 
     fetchData();
@@ -30,8 +35,10 @@ const CheckinCodePage = () => {
   return (
     <div>
       <h1>Checkin Code</h1>
+      <br></br>
+      {checkinCode && <p className="text-3xl">{checkinCode}</p>}
     </div>
   );
 };
 
-export default CheckinCodePage;
+export default CheckinPage;
