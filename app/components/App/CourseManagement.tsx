@@ -160,7 +160,9 @@ const CourseManagement = ({ currentUser }) => {
                         </a>
                       </li>
                       <li>
-                        <a>Generate New Checkin Code</a>
+                        <a href={`/checkincode?courseId=${course.id}`}>
+                          Generate New Checkin Code
+                        </a>
                       </li>
                       <li>
                         <a>View Attendance</a>
