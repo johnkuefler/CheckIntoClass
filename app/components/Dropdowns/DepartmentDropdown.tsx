@@ -1,4 +1,4 @@
-import { useEffect, useState, Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 const DepartmentDropdown = ({ value, onSelect }) => {
   const [departments, setDepartments] = useState([]);

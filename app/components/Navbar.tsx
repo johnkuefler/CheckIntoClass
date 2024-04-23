@@ -16,11 +16,7 @@ const Navbar = () => {
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
-          <li><a href="#">Analytics</a></li>
-          <li><a href="#">Tools</a></li>
           <li><a href="/admin">Admin</a></li>
-          <li><a href="#">Account</a></li>
-          <li><a href="#">Help & Support</a></li>
           <li><LogoutButton /></li>
         </ul>
       </div>
