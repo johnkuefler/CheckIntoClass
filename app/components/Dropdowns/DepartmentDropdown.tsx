@@ -27,20 +27,19 @@ const DepartmentDropdown = ({ value, onSelect }) => {
 
   return (
     <Fragment>
-      <label className="label" htmlFor="departmentDropdown">Department</label>
-      <select
-        className="select select-bordered w-full max-w-xs"
-        aria-label="Select Department"
-        id="departmentDropdown"
-        value={value} // Set the selected value
-        onChange={handleSelectChange} // Call onSelect when the selection changes
-      >
-        {departments.map((department) => (
-          <option key={department.id} value={department.id}>
-            {department.name}
-          </option>
-        ))}
-      </select>
+    <label htmlFor="departmentDropdown" className="label">Department</label>
+    <select
+      className="select select-bordered w-full max-w-xs"
+      aria-label="Select Department"
+      value={value} // Set the selected value
+      onChange={handleSelectChange} // Call onSelect when the selection changes
+    >
+      {departments.map((department) => (
+        <option key={department.id} value={department.id}>
+          {department.name}
+        </option>
+      ))}
+    </select>
     </Fragment>
   );
 
