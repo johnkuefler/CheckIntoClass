@@ -36,6 +36,8 @@ const CheckinPage = () => {
     <div>
       <h1>Checkin Code</h1>
       <br></br>
+      
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=http://localhost:3000/psu?code=checkinCode"/>
       {checkinCode && <p className="text-3xl">{checkinCode}</p>}
     </div>
   );
