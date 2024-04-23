@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import CoursesModal from "@/app/components/App/CoursesModal";
 import getUser from "@/lib/getUser";
+import exportFromJSON from 'export-from-json'
+import { Extensions } from "@prisma/client/runtime/library";
 
 const CourseManagement = ({ currentUser }) => {
   const [courses, setCourses] = useState([]);
@@ -79,6 +81,47 @@ const CourseManagement = ({ currentUser }) => {
     }
   };
 
+  const exportAttendance = async (courseId) => {
+    const response = await fetch(`/api/attendance/${courseId}`, {
+      method: "GET",
+    });
+  
+    if (response.ok) {
+      try {
+        const jsonData = await response.json();
+      // Extract check-in data
+      const checkinData = {
+        'Checkin ID': jsonData.checkin.id,
+        'Created At': jsonData.checkin.createdAt,
+      };
+
+      // Prepare the data for export
+      const data = jsonData.enrollments.map((enrollment) => ({
+        'Student ID': enrollment.studentID,
+        'Student Name': enrollment.studentName,
+        ...checkinData, // Include check-in data for each enrollment
+      }));
+  
+        // Specify the export options
+        const options = {
+          fileName: 'attendance', // Specify the file name without extension
+          exportType: exportFromJSON.types.csv, // Specify the export type (csv/json)
+        };
+
+      
+  
+        // Export the data
+        exportFromJSON({data, ...options});
+      } catch (error) {
+        console.error("Error exporting attendance:", error);
+      }
+    } else {
+      console.error("Failed to export attendance");
+    }
+  };
+
+
+
   return (
     <div>
       <h3 className="text-3xl font-semibold">Manage Courses</h3>
@@ -125,7 +168,7 @@ const CourseManagement = ({ currentUser }) => {
                         <a>View Attendance</a>
                       </li>
                       <li>
-                        <a>Export Attendance</a>
+                        <a onClick={() => exportAttendance(course.id)}>{'Export Attendance'}</a>
                       </li>
                       <li>
                         <a onClick={() => openModal(course)}>Edit</a>

@@ -18,14 +18,15 @@ const UserModal = ({ User, onSave, onClose, isEditMode }) => {
       <div className="modal modal-open">
         <div className="modal-box">
           <h3 className="font-bold text-lg">{isEditMode ? 'Edit' : 'Add'} User</h3>
+          <label htmlFor="First Name" className="label-text">First Name</label>
           <input type="text" placeholder="First Name" className="input input-bordered w-full my-2" value={firstName} onChange={(e) => setfirstName(e.target.value)} />
+          <label htmlFor="Last Name" className="label-text">Last Name</label>
           <input type="text" placeholder="Last Name" className="input input-bordered w-full my-2" value={lastName} onChange={(e) => setlastName(e.target.value)} />
+          <label htmlFor="Email" className="label-text">Email</label>
           <input type="text" placeholder="Email" className="input input-bordered w-full my-2" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <label htmlFor="Password" className="label-text">Password</label>
           <input type="password" placeholder="Password" className="input input-bordered w-full my-2" value={password} onChange={(e) => setPassword(e.target.value)} />
-         
           <InstitutionsDropdown value={institutionId.id} onSelect={(selectedInstitution) => setInstitutionId(selectedInstitution)} />
-
-
           <DepartmentDropdown value={departmentId?.id} onSelect={(selectedDepartment) => setDepartmentId(selectedDepartment)} />
           <div className="modal-action">
             <button onClick={handleSubmit} className="btn btn-primary">Save</button>
