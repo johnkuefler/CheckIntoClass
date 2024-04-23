@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 const DepartmentDropdown = ({ value, onSelect }) => {
   const [departments, setDepartments] = useState([]);
@@ -26,6 +26,8 @@ const DepartmentDropdown = ({ value, onSelect }) => {
   };
 
   return (
+    <Fragment>
+    <label htmlFor="departmentDropdown" className="label">Department</label>
     <select
       className="select select-bordered w-full max-w-xs"
       aria-label="Select Department"
@@ -38,6 +40,7 @@ const DepartmentDropdown = ({ value, onSelect }) => {
         </option>
       ))}
     </select>
+    </Fragment>
   );
 
 };
