@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import CoursesModal from "@/app/components/App/CoursesModal";
 import getUser from "@/lib/getUser";
-//import exportFromJSON from 'export-from-json';
+import exportFromJSON from 'export-from-json';
 import { Extensions } from "@prisma/client/runtime/library";
 
 const CourseManagement = ({ currentUser }) => {
