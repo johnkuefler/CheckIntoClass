@@ -8,13 +8,8 @@ export async function GET(
   { params }: { params: { code: string } }
 ) {
   const code = params.code;
-  // Checkin Codes are not guarenteed to be unique however are pretty much so
-  // To look up a checkin code by the code I used find many and grabbed the last code from that list
-  // Choosing the last code means choosing the latest code date wise
-  const checkinCode = await prisma.checkinCode.findMany({ 
-    take: -1, // I HATE WHAT PYTHON HAS DONE TO THIS WORLD
+  const checkinCode = await prisma.checkinCode.findFirst({ 
     where: { code: code },
   });
-  // Want to check if this will work when the database is back online
-  return NextResponse.json(checkinCode)/*[0]*/;
+  return NextResponse.json(checkinCode);
 }

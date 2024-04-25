@@ -35,11 +35,10 @@ const CheckInForm = () => {
     }
 
     const checkinCodeResponse = await fetch(`api/checkin-codes/code/${checkinCode}`); 
-    // Choose the first element in the array
-    const checkinCodeData = (await checkinCodeResponse.json())[0]; 
+    const checkinCodeData = await checkinCodeResponse.json(); 
 
     const studentEnrollmentResponse = await fetch(`api/enrollments/course/student/${checkinCodeData.courseId}/${studentId}`);
-    const studentEnrollmentData = (await studentEnrollmentResponse.json())[0];
+    const studentEnrollmentData = await studentEnrollmentResponse.json();
 
     const url = "api/checkins";
     const checkinData = {
