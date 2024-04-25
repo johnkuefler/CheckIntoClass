@@ -15,5 +15,6 @@ export async function GET(
     take: -1, // I HATE WHAT PYTHON HAS DONE TO THIS WORLD
     where: { code: code },
   });
-  return NextResponse.json(checkinCode);
+  // Want to check if this will work when the database is back online
+  return NextResponse.json(checkinCode)/*[0]*/;
 }
