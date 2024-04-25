@@ -43,6 +43,25 @@ import { format } from "date-fns";
       fetchData();
     }, []);
 
+    const handleDelete = async (courseId) => {
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this enrollment?"
+      );
+      if (confirmed) {
+        const response = await fetch(`/api/enrollments/${courseId}`, {
+          method: "DELETE",
+        });
+  
+        if (response.ok) {
+          // Refresh the institutions list
+          fetchData();
+        } else {
+          // Handle errors
+          console.error("Failed to delete the enrollment");
+        }
+      }
+    };
+
 
   return (
     <div>
@@ -65,6 +84,9 @@ import { format } from "date-fns";
               <td>{data.studentID}</td>
               <td>{attendanceData.checkin.id}</td>
               <td>{attendanceData.checkin.createdAt}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <button onClick={() => handleDelete(enrollment?.id)}>Delete</button>
+              </td>
             </tr>
           ))}
           </tbody>      
