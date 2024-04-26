@@ -26,9 +26,7 @@ const UserPage = () => {
   };
 
   const handleSave = async (UserData) => {
-    const url = UserData.id
-    ? `/api/Users/${UserData.id}`
-    : "/api/Users";
+    const url = UserData.id ? `/api/Users/${UserData.id}` : "/api/Users";
     const method = UserData.id ? "PUT" : "POST";
 
 console.log(UserData);
@@ -77,6 +75,10 @@ console.log(UserData);
       }
     }
   };
+  const handleCloseModal = () => {
+    setShowModal(false); // Close the modal when Cancel button is clicked
+  };
+
 
   return (
     <div>
@@ -123,7 +125,10 @@ console.log(UserData);
       {showModal && (
         <UserModal
           User={selectedUser}
-          onSave={handleSave}
+          onSave={(userData) => {
+            handleSave(userData);
+            setShowModal(false);
+          }}
           onClose={() => setShowModal(false)}
           isEditMode={isEditMode}
         />
