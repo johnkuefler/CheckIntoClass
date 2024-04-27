@@ -20,11 +20,35 @@ export async function PUT(
 ) {
     const id = params.id;
     const data = await request.json();
-    const enrollment = await prisma.enrollment.update({
-        where: { id: parseInt(id, 10) },
-        data: data,
+
+    // Check if the student ID already exists for the given course ID
+    const existingEnrollment = await prisma.enrollment.findFirst({
+        where: {
+            AND: [
+                { courseId: data.courseId },
+                { studentID: data.studentID } 
+            ]
+        }
     });
-    return NextResponse.json(enrollment);
+
+    if (existingEnrollment && existingEnrollment.id !== parseInt(id, 10)) {
+        // If an enrollment with the same student ID already exists for the course, return an error response
+        return new Response("Student ID already exists for this course", { status: 400 });
+    }
+
+    try {
+        // continue with the enrollment if validation passes
+        const enrollment = await prisma.enrollment.update({
+            where: { id: parseInt(id, 10) },
+            data: data,
+        });
+        
+        return NextResponse.json(enrollment);
+    } catch (error) {
+        // Handle any other errors
+        console.error("Error updating enrollment:", error);
+        return new Response("Failed to update enrollment", { status: 500 });
+    }
 }
 
 export async function DELETE(
