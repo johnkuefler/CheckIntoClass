@@ -27,3 +27,4 @@ export async function DELETE(
         where: { id: parseInt(id, 10) },
     });
     return new Response(null, { status: 204 });
+}
