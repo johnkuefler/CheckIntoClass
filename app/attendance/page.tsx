@@ -71,8 +71,8 @@ import { format } from "date-fns";
           {/* Table headers */}
           <thead>
             <tr>
-              <th>Student ID</th>
               <th>Student Name</th>
+              <th>Student ID</th>
               <th>Checkin ID</th>
               <th>Checkin Time</th>
             </tr>
