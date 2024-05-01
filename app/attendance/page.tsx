@@ -84,7 +84,7 @@ import { format } from "date-fns";
               <td>{data.studentID}</td>
               <td>{attendanceData.checkin.id}</td>
               <td>{attendanceData.checkin.createdAt}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="bg-red-500 hover:bg-red-600 text-white font-bold rounded">
                 <button onClick={() => handleDelete(enrollment?.id)}>Delete</button>
               </td>
             </tr>
