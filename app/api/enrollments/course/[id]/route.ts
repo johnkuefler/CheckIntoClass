@@ -11,5 +11,6 @@ export async function GET(
     const enrollmentsForCourse = await prisma.enrollment.findMany({
         where: { courseId: parseInt(id, 10) },
     });
+
     return NextResponse.json(enrollmentsForCourse);
 }

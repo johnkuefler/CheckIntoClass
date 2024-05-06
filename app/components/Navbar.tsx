@@ -16,7 +16,7 @@ const Navbar = () => {
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
-          <li><a href="/admin">Admin</a></li>
+          <li><a href="/admin" className="mt-2">Admin</a></li>
           <li><LogoutButton /></li>
         </ul>
       </div>

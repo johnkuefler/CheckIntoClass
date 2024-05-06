@@ -89,26 +89,19 @@ const CourseManagement = ({ currentUser }) => {
     if (response.ok) {
       try {
         const jsonData = await response.json();
-      // Extract check-in data
-      const checkinData = {
-        'Checkin ID': jsonData.checkin.id,
-        'Created At': jsonData.checkin.createdAt,
-      };
-
-      // Prepare the data for export
-      const data = jsonData.enrollments.map((enrollment) => ({
-        'Student ID': enrollment.studentID,
-        'Student Name': enrollment.studentName,
-        ...checkinData, // Include check-in data for each enrollment
-      }));
+        // Prepare the data for export by mapping over checkins
+        const data = jsonData.checkins.map((checkin) => ({
+          'Checkin Code': checkin.checkinCode.code,
+          'Created At': new Date(checkin.createdAt).toLocaleString(),
+          'Student ID': checkin.enrollment.studentID,
+          'Student Name': checkin.enrollment.studentName,
+        }));
   
         // Specify the export options
         const options = {
           fileName: 'attendance', // Specify the file name without extension
-          exportType: exportFromJSON.types.csv, // Specify the export type (csv/json)
+          exportType: exportFromJSON.types.csv, // Specify the export type (csv or json)
         };
-
-      
   
         // Export the data
         exportFromJSON({data, ...options});
@@ -119,6 +112,7 @@ const CourseManagement = ({ currentUser }) => {
       console.error("Failed to export attendance");
     }
   };
+
 
 
 

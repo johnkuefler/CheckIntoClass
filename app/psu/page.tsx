@@ -37,8 +37,21 @@ const CheckInForm = () => {
     const checkinCodeResponse = await fetch(`api/checkin-codes/code/${checkinCode}`); 
     const checkinCodeData = await checkinCodeResponse.json(); 
 
+    if (!checkinCodeData) {
+      alert('Invalid checkin code')
+      return;
+    }
+
+
     const studentEnrollmentResponse = await fetch(`api/enrollments/course/student/${checkinCodeData.courseId}/${studentId}`);
     const studentEnrollmentData = await studentEnrollmentResponse.json();
+
+    console.log(studentEnrollmentData)
+
+    if (!studentEnrollmentData) {
+      alert('Invalid student ID')
+      return;
+    }
 
     const url = "api/checkins";
     const checkinData = {
@@ -61,6 +74,8 @@ const CheckInForm = () => {
         // Reset form fields after submission
         setStudentId('');
         setCheckinCode('');
+
+        alert('Checkin successful')
     } else {
       // Handle errors
       console.error("Failed to save the enrollment");
