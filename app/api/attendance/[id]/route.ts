@@ -17,3 +17,14 @@ export async function GET(
 
     return NextResponse.json({checkin, enrollments});
 }
+
+export async function DELETE(
+    request: NextRequest,
+    { params }: { params: { id: string } }
+) {
+    const id = params.id;
+    await prisma.enrollment.delete({
+        where: { id: parseInt(id, 10) },
+    });
+    return new Response(null, { status: 204 });
+}
