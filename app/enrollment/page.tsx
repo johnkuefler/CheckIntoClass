@@ -95,7 +95,7 @@ const EnrollmentPage = () => {
     if (response.ok) {
       // Refresh the enrollment list
       fetchData();
-      setShowModal(false);
+      setShowAddStudentModal(false);
     } else {
       // Handle errors
       console.error("Failed to save the enrollment");
@@ -164,7 +164,7 @@ const EnrollmentPage = () => {
         <AddStudentModal
           enrollment={selectedEnrollment}
           onSave={(studentData) => handleAddStudent(studentData, course?.id)}
-          onClose={() => setShowModal(false)}
+          onClose={() => setShowAddStudentModal(false)} 
           courseId={course?.id}
         />
       )}  
