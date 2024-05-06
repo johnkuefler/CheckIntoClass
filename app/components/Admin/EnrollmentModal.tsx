@@ -5,14 +5,19 @@ const EnrollmentModal = ({ enrollment, onSave, onClose, isEditMode }) => {
     const [name, setName] = useState(enrollment?.studentName || '');
     const [active, setActive] = useState(enrollment?.active || false); 
   
-    const handleSubmit = () => {
-      var activeAsBool = false;
-      if (active == "on") {
-          activeAsBool = true;
-      }
-      onSave({ ...enrollment, studentName: name, studentID: id, active: activeAsBool});
-    };
   
+const handleSubmit =() =>{
+    const activeAsBool = active; //convert checkbox value to boolean
+    const updatedEnrollment = {
+      ...enrollment, studentName: name, studentID: id, active: activeAsBool
+    };
+    onSave(updatedEnrollment);
+    onClose();
+  };
+  const handleCancel = () => {
+    onClose(); // Close the modal without saving changes
+  };
+
     return (
       <div className="modal modal-open">
         <div className="modal-box">
@@ -25,7 +30,7 @@ const EnrollmentModal = ({ enrollment, onSave, onClose, isEditMode }) => {
           <input id="active" type="checkbox" placeholder="Active" value={active} onChange={(e) => setActive(e.target.checked)}/>
           <div className="modal-action">
             <button onClick={handleSubmit} className="btn btn-primary">Save</button>
-            <button onClick={onClose} className="btn">Cancel</button>
+            <button onClick={handleCancel} className="btn">Cancel</button>
           </div>
         </div>
       </div>

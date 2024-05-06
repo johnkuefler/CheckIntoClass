@@ -95,7 +95,7 @@ const EnrollmentPage = () => {
     if (response.ok) {
       // Refresh the enrollment list
       fetchData();
-      setShowModal(false);
+      setShowAddStudentModal(false);
     } else {
       // Handle errors
       console.error("Failed to save the enrollment");
@@ -125,32 +125,46 @@ const EnrollmentPage = () => {
   return (
     <div>
       <h1 className="text-2xl font-semibold mb-4">Enrollments for {course?.name}</h1>
-      <button onClick={openAddStudentModal}>Add Student</button>
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+      <button onClick={openAddStudentModal}className="btn btn-primary mt-4" >Add Student</button>
+      <div className= "mt-6">
+      <table className="table w-full">
+        <thead>
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student ID</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Active</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+            <th>Student ID</th>
+            <th>Student Name</th>
+            <th>Active</th>
+            <th>Actions</th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody>
           {enrollments.map((enrollment) => (
             <tr key={enrollment?.id}>
-              <td className="px-6 py-4 whitespace-nowrap">{enrollment.studentID}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{enrollment.studentName}</td>
+              <td>{enrollment.studentID}</td>
+              <td>{enrollment.studentName}</td>
               <td className="px-6 py-4 whitespace-nowrap flex items-center">
                 <input type="checkbox" checked={enrollment.active || false} disabled={true} className="mr-2"/>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <button onClick={() => openModal(enrollment)} className="mr-2">Edit</button>
-                <button onClick={() => handleDelete(enrollment?.id)}>Delete</button>
+              <td>
+              <details className="dropdown">
+              <summary className="m-1 btn">Actions</summary>
+              <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+                      <li>
+                        <a>
+                        <button onClick={() => openModal(enrollment)} className="mr-2">Edit</button> 
+                        </a>
+                      </li>
+                      <li>
+                        <a><button onClick={() => handleDelete(enrollment?.id)}>Delete</button>
+                         </a>
+                      </li>
+                      </ul>
+                      </details>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
       {showModal && (
         <EnrollmentModal
           enrollment={selectedEnrollment}
@@ -164,7 +178,7 @@ const EnrollmentPage = () => {
         <AddStudentModal
           enrollment={selectedEnrollment}
           onSave={(studentData) => handleAddStudent(studentData, course?.id)}
-          onClose={() => setShowModal(false)}
+          onClose={() => setShowAddStudentModal(false)} 
           courseId={course?.id}
         />
       )}  
