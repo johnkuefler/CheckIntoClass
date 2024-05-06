@@ -16,7 +16,7 @@ const CheckInForm = () => {
     setErrorMessage('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!studentId && !checkinCode) {
@@ -34,12 +34,37 @@ const CheckInForm = () => {
       return;
     }
 
-    
-    console.log("Student ID:", studentId);
-    console.log("Checkin Code:", checkinCode);
-    // Reset form fields after submission
-    setStudentId('');
-    setCheckinCode('');
+    const checkinCodeResponse = await fetch(`api/checkin-codes/code/${checkinCode}`); 
+    const checkinCodeData = await checkinCodeResponse.json(); 
+
+    const studentEnrollmentResponse = await fetch(`api/enrollments/course/student/${checkinCodeData.courseId}/${studentId}`);
+    const studentEnrollmentData = await studentEnrollmentResponse.json();
+
+    const url = "api/checkins";
+    const checkinData = {
+        checkinCodeId: checkinCodeData.id,
+        checkinCode,
+        enrollmentId: studentEnrollmentData.id 
+    }
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...checkinData, 
+      }),
+    });
+
+    if (response.ok) {
+        // Reset form fields after submission
+        setStudentId('');
+        setCheckinCode('');
+    } else {
+      // Handle errors
+      console.error("Failed to save the enrollment");
+    }
   };
 
   return (
