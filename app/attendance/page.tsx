@@ -3,94 +3,81 @@ import UserModal from "@/app/components/Admin/UsersModal";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 
-  const AttendancePage = () => {
-    const [courseId, setCourseId] = useState(0);
-    const [course, setCourse] = useState({});
-    const [attendanceData, setAttendanceData] = useState({ checkin: {}, enrollments: [] });
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        const params = new URLSearchParams(window.location.search);
-        const courseId = params.get("courseId");
-        setCourseId(courseId);
-        
-        const courseResponse = await fetch(`/api/courses/${courseId}`);
-        const courseData = await courseResponse.json();
-        setCourse(courseData);
+const AttendancePage = () => {
+  const [courseId, setCourseId] = useState(0);
+  const [course, setCourse] = useState({});
+  const [attendanceData, setAttendanceData] = useState({});
 
+  const fetchData = async () => {
+    const params = new URLSearchParams(window.location.search);
+    const courseId = params.get("courseId");
+    setCourseId(courseId);
 
-        // Fetch attendance data by courseId
-        const response = await fetch(`/api/attendance/${courseId}`);
-        const data = await response.json();
-  
-        // Format the date strings in the data
-        const formattedData = {
-          ...data,
-          checkin: {
-            ...data.checkin,
-            createdAt: format(new Date(data.checkin.createdAt), "yyyy-MM-dd HH:mm:ss")
-          },
-          enrollments: data.enrollments.map(enrollment => ({
-            ...enrollment,
-            createdAt: format(new Date(enrollment.createdAt), "yyyy-MM-dd HH:mm:ss"),
-            updatedAt: format(new Date(enrollment.updatedAt), "yyyy-MM-dd HH:mm:ss")
-          }))
-        };
-  
-        setAttendanceData(formattedData);
-      };
-  
-      fetchData();
-    }, []);
+    const courseResponse = await fetch(`/api/courses/${courseId}`);
+    const courseData = await courseResponse.json();
+    setCourse(courseData);
 
-    const handleDelete = async (courseId) => {
-      const confirmed = window.confirm(
-        "Are you sure you want to delete this enrollment?"
-      );
-      if (confirmed) {
-        const response = await fetch(`/api/enrollments/${courseId}`, {
-          method: "DELETE",
-        });
-  
-        if (response.ok) {
-          // Refresh the institutions list
-          fetchData();
-        } else {
-          // Handle errors
-          console.error("Failed to delete the enrollment");
-        }
+    // Fetch attendance data by courseId
+    const response = await fetch(`/api/attendance/${courseId}`);
+    const data = await response.json();
+
+    console.log(data);
+
+    setAttendanceData(data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleDelete = async (checkinId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this enrollment?"
+    );
+    if (confirmed) {
+      const response = await fetch(`/api/attendance/${checkinId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        fetchData();
+      } else {
+        // Handle errors
+        console.error("Failed to delete the checkin");
       }
-    };
-
+    }
+  };
 
   return (
     <div>
       <h3 className="text-3xl font-semibold">Attendance for {course.name}</h3>
       <div className="overflow-x-auto mt-6">
         <table className="table w-full">
-          {/* Table headers */}
           <thead>
             <tr>
               <th>Student Name</th>
               <th>Student ID</th>
-              <th>Checkin ID</th>
+              <th>Checkin Code</th>
               <th>Checkin Time</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-          {attendanceData.enrollments.map((data) => (
-            <tr key={data.id}>
-              <td>{data.studentName}</td>
-              <td>{data.studentID}</td>
-              <td>{attendanceData.checkin.id}</td>
-              <td>{attendanceData.checkin.createdAt}</td>
-              <td className="bg-red-500 hover:bg-red-600 text-white font-bold rounded">
-                <button onClick={() => handleDelete(enrollment?.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-          </tbody>      
-      </table>
+            {attendanceData?.checkins?.map((checkin) => (
+              <tr key={checkin.id}>
+                <td>{checkin.enrollment.studentName}</td>
+                <td>{checkin.enrollment.studentID}</td>
+                <td>{checkin.checkinCode.code}</td>
+                <td>{new Date(checkin.createdAt).toLocaleString()}</td>
+                <td>
+                  <button className="btn btn-xs btn-error ml-5 text-white" onClick={() => handleDelete(checkin.id)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

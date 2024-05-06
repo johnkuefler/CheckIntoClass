@@ -7,15 +7,24 @@ export async function GET(
     { params }: { params : { id: string } }
 ) {
     const id = params.id;
-    const checkin = await prisma.checkin.findUnique({
-        where: { id: parseInt(id, 10) },
-    });
 
-    const enrollments = await prisma.enrollment.findMany({
-        where: { courseId: parseInt(id, 10) },
-    });
+    const checkins = await prisma.checkin.findMany({
+        where: {
+          checkinCode: {
+            courseId: parseInt(id, 10)
+          }
+        },
+        include: {
+          checkinCode: true, // include checkin code details
+          enrollment: {
+            include: {
+              specialEventCheckins: true // include special event checkins within enrollments
+            }
+          }
+        }
+      });
 
-    return NextResponse.json({checkin, enrollments});
+    return NextResponse.json({checkins});
 }
 
 export async function DELETE(
@@ -23,7 +32,7 @@ export async function DELETE(
     { params }: { params: { id: string } }
 ) {
     const id = params.id;
-    await prisma.enrollment.delete({
+    await prisma.checkin.delete({
         where: { id: parseInt(id, 10) },
     });
     return new Response(null, { status: 204 });

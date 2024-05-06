@@ -30,7 +30,7 @@ const EnrollmentPage = () => {
       setCourse(data);
 
       // fetch enrollments by course id
-      const enrollments = await fetch(`/api/enrollments?courseId=${courseId}`);
+      const enrollments = await fetch(`/api/enrollments/course/${courseId}`);
       const enrollmentData = await enrollments.json();
       console.log(enrollmentData);
       setEnrollments(enrollmentData);
