@@ -43,7 +43,7 @@ const CheckInForm = () => {
     }
 
 
-    const studentEnrollmentResponse = await fetch(`api/enrollments/course/student/${checkinCodeData.courseId}/${studentId}`);
+  const studentEnrollmentResponse = await fetch(`api/enrollments/course/student/${checkinCodeData.courseId}/${studentId}`);
     const studentEnrollmentData = await studentEnrollmentResponse.json();
 
     console.log(studentEnrollmentData)
